@@ -10,7 +10,6 @@ const EstimationSelector = (props: {
   setNumClock: (numClock: number) => void;
 }) => {
   const [inputValue, setInputValue] = useState("");
-
   const numbers = Array.from(Array(5).keys());
   let numClockDisplay;
   if (props.numClock <= 5) {

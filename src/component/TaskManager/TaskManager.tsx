@@ -6,14 +6,16 @@ import "@fontsource/roboto/700.css";
 import TaskSummaryCard from "./TaskSummaryCard";
 import TaskCreator from "./TaskCreator";
 import ChildrenTaskList from "./ChildrenTaskList";
+import { useTask } from "domain/hooks/task";
+import { TaskId } from "domain/model";
 
-const TaskManager = () => {
-  const taskName = "taskName";
+const TaskManager = (props: { taskId: TaskId }) => {
+  const task = useTask(props.taskId);
   return (
     <Stack spacing={2}>
       <Card>
         <Typography variant="h2" align="center">
-          {taskName}
+          {task.name}
         </Typography>
       </Card>
       <TaskSummaryCard />
