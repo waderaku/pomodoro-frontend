@@ -13,7 +13,18 @@ export type Task = {
   estimatedWorkload: Minute;
   deadline: Dayjs;
   notes: Notes;
-  createTask: (taskName: TaskName, estimatedWorkload: Minute) => void;
+  createTask: (
+    taskName: TaskName,
+    estimatedWorkload: Minute,
+    deadline: Dayjs
+  ) => void;
+  finishTask: (finishedWorkload: Minute) => void;
+  updateTask: (
+    taskName: TaskName,
+    estimatedWorkload: Minute,
+    deadline: Dayjs,
+    notes: Notes
+  ) => void;
 };
 
 export type Timer = {

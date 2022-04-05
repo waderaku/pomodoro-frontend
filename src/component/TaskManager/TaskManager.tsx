@@ -19,7 +19,7 @@ const TaskManager = (props: { taskId: TaskId }) => {
         </Typography>
       </Card>
       <TaskSummaryCard />
-      <TaskCreator />
+      <TaskCreator taskId={""} />
       <ChildrenTaskList />
     </Stack>
   );
