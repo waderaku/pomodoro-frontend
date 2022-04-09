@@ -1,9 +1,9 @@
 import { useRecoilValue, useRecoilCallback } from "recoil";
-import { Task, TaskId, TaskView } from "../model";
+import { TaskViewModel, TaskId } from "../model";
 
 const NOT_IMPLEMENTED_ERROR = new Error("Not Implemented");
 
-export const useTask = (taskId: TaskId): Task => {
+export const useTaskViewModel = (taskId: TaskId): TaskViewModel => {
   // const taskPropertys = useRecoilValue(/* recoil設計後 */);
 
   // TaskCreatorとサイドバーのプロジェクトの追加で使われるタスク追加
@@ -42,11 +42,6 @@ export const useTask = (taskId: TaskId): Task => {
   // );
 
   // return ({...taskPropertys},createTask,finishTask)
-  throw NOT_IMPLEMENTED_ERROR;
-};
-
-// SideNaviやTaskManager用のTaskId[]からTaskView[]を返すHook
-export const useTaskViewArray = (taskIdArray: TaskId[]): TaskView[] => {
   throw NOT_IMPLEMENTED_ERROR;
 };
 
