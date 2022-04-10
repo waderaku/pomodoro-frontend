@@ -11,33 +11,28 @@ export type Task = {
   childrenIdList: TaskId[];
   finishedWorkload: Minute;
   estimatedWorkload: Minute;
-  deadline: Dayjs;
+  deadline: Dayjs | null;
   notes: Notes;
+};
+
+export type TaskViewModel = {
+  task: Task;
   createTask: (
     taskName: TaskName,
     estimatedWorkload: Minute,
-    deadline: Dayjs
+    deadline: Dayjs | null
   ) => void;
   finishTask: (finishedWorkload: Minute) => void;
   updateTask: (
     taskName: TaskName,
     estimatedWorkload: Minute,
-    deadline: Dayjs,
+    deadline: Dayjs | null,
     notes: Notes
   ) => void;
 };
 
 export type Timer = {
-  task: Task;
+  task: TaskViewModel;
   start: Dayjs;
   length: Minute;
-};
-
-export type TaskView = {
-  task: Task;
-  toManager: () => void;
-  startTimer: () => void;
-  finishTask: () => void;
-  deleteTask: () => void;
-  updateTask: () => void;
 };
