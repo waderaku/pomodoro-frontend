@@ -10,6 +10,7 @@ export type Task = {
   id: TaskId;
   name: TaskName;
   childrenIdList: TaskId[];
+  done: boolean;
   finishedWorkload: Minute;
   estimatedWorkload: Minute;
   deadline: Dayjs | null;
