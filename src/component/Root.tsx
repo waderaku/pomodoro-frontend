@@ -1,17 +1,20 @@
-import { RecoilRoot } from "recoil";
+import { useSetRecoilState } from "recoil";
 import TaskManager from "./TaskManager";
 import ToolNavi from "./ToolNavi";
 import SideNavi from "./SideNavi";
-import { useSelectedTaskId } from "domain/hooks/task";
+import { userIdState, useSelectedTaskId } from "domain/hooks/task";
 
 const Root = () => {
   const taskId = useSelectedTaskId();
+  const testUserId = "testUser";
+  const setUserId = useSetRecoilState(userIdState);
+  setUserId(testUserId);
   return (
-    <RecoilRoot>
+    <div>
       <ToolNavi />
       <SideNavi />
       <TaskManager taskId={taskId} />
-    </RecoilRoot>
+    </div>
   );
 };
 

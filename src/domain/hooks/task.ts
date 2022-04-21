@@ -1,5 +1,6 @@
-import { useRecoilValue, useRecoilCallback } from "recoil";
-import { TaskViewModel, TaskId } from "../model";
+import { fetchTask } from "backend_api";
+import { atom, selector } from "recoil";
+import { TaskViewModel, TaskId, Task, UserId } from "../model";
 
 const NOT_IMPLEMENTED_ERROR = new Error("Not Implemented");
 
@@ -49,3 +50,20 @@ export const useTaskViewModel = (taskId: TaskId): TaskViewModel => {
 export const useSelectedTaskId = (): TaskId => {
   throw NOT_IMPLEMENTED_ERROR;
 };
+
+export const userIdState = atom<UserId | null>({
+  key: "userId",
+  default: null,
+});
+
+export const taskPoolState = selector<Map<TaskId, Task>>({
+  key: "taskPool",
+  get: async ({ get }) => {
+    const userId = get(userIdState);
+    if (!userId) {
+      throw Error("User is not yet logged in");
+    }
+    const taskPool = await fetchTask(userId);
+    return taskPool;
+  },
+});

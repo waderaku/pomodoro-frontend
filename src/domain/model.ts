@@ -1,5 +1,6 @@
 import { Dayjs } from "dayjs";
 
+export type UserId = string;
 export type TaskId = string;
 export type TaskName = string;
 export type Minute = number;
