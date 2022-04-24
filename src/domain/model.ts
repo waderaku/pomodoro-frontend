@@ -3,6 +3,7 @@ import { Dayjs } from "dayjs";
 export type TaskId = string;
 export type TaskName = string;
 export type Minute = number;
+export type Second = number;
 export type Notes = string;
 
 export type Task = {
