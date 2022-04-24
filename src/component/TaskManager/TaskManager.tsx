@@ -1,8 +1,4 @@
 import { Typography, Stack, Card } from "@mui/material";
-import "@fontsource/roboto/300.css";
-import "@fontsource/roboto/400.css";
-import "@fontsource/roboto/500.css";
-import "@fontsource/roboto/700.css";
 import TaskSummaryCard from "./TaskSummaryCard";
 import TaskCreator from "./TaskCreator";
 import ChildrenTaskList from "./ChildrenTaskList";
