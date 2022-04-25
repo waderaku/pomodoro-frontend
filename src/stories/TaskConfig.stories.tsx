@@ -49,7 +49,7 @@ const taskViewModel: TaskViewModel = {
     done: false,
     finishedWorkload: 2,
     estimatedWorkload: 2,
-    deadline: dayjs(new Date()),
+    deadline: dayjs(),
     notes:
       "テストテストテスト \r\nテストテストテスト \r\nテストテストテスト \r\n",
   },
