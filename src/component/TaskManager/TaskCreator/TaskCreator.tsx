@@ -12,7 +12,8 @@ const TaskCreator = (props: { taskId: TaskId }) => {
     if (e.key === "Enter") {
       const element = e.target as HTMLInputElement;
       const taskName = element.value;
-      createTask(taskName, numClock * 25, null);
+      // TODO Initial Notes
+      createTask(taskName, numClock * 25, null, "");
     }
   };
   return (

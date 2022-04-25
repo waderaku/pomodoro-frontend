@@ -1,8 +1,17 @@
 import axios from "axios";
 import dayjs from "dayjs";
-import { Minute, Notes, Task, TaskId, TaskName, UserId } from "domain/model";
+import {
+  Deadline,
+  Minute,
+  Notes,
+  Task,
+  TaskId,
+  TaskName,
+  UserId,
+} from "domain/model";
 
 const BACKEND_URI = process.env.REACT_APP_BACKEND_URL;
+const NOT_IMPLEMENTED_ERROR = new Error("Not Implemented");
 
 interface TaskData {
   name: TaskName;
@@ -39,7 +48,7 @@ const intoDomainTask = (apitask: APITask): TaskTuple => {
   };
 };
 
-export const fetchTask = async (userId: UserId) => {
+export const fetchTaskAPI = async (userId: UserId) => {
   const endpoint = BACKEND_URI + "/task";
   const idHeader = {
     userId: userId,
@@ -52,7 +61,7 @@ export const fetchTask = async (userId: UserId) => {
       const tupleArray = res.data.map(intoDomainTask);
       const taskPool: Map<TaskId, Task> = new Map();
       tupleArray.map((tuple) => {
-        taskPool.set(tuple.id, tuple.task);
+        return taskPool.set(tuple.id, tuple.task);
       });
       return taskPool;
     })
@@ -61,4 +70,19 @@ export const fetchTask = async (userId: UserId) => {
         `Unexpected API Response from ${endpoint}.\nError: ${err}`
       );
     });
+};
+
+export const updateTaskAPI = (userId: UserId, task: Task) => {
+  throw NOT_IMPLEMENTED_ERROR;
+};
+
+export const registerTaskAPI = (
+  userId: UserId,
+  parentId: TaskId,
+  name: TaskName,
+  estimatedWorkload: Minute,
+  deadline: Deadline,
+  notes: Notes
+) => {
+  throw NOT_IMPLEMENTED_ERROR;
 };

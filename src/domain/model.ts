@@ -6,6 +6,7 @@ export type TaskName = string;
 export type Minute = number;
 export type Second = number;
 export type Notes = string;
+export type Deadline = Dayjs | null;
 
 export type Task = {
   id: TaskId;
@@ -14,7 +15,7 @@ export type Task = {
   done: boolean;
   finishedWorkload: Minute;
   estimatedWorkload: Minute;
-  deadline: Dayjs | null;
+  deadline: Deadline;
   notes: Notes;
 };
 
@@ -23,13 +24,14 @@ export type TaskViewModel = {
   createTask: (
     taskName: TaskName,
     estimatedWorkload: Minute,
-    deadline: Dayjs | null
+    deadline: Deadline,
+    notes: Notes
   ) => void;
-  finishTask: (finishedWorkload: Minute) => void;
+  finishTask: () => void;
   updateTask: (
     taskName: TaskName,
     estimatedWorkload: Minute,
-    deadline: Dayjs | null,
+    deadline: Deadline,
     notes: Notes
   ) => void;
 };

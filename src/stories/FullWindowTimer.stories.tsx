@@ -1,7 +1,8 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import FullwindowTimer from "component/TaskManager/ChildrenTaskList/Timer/FullWindowTimer";
-import dayjs, { Dayjs } from "dayjs";
+import dayjs from "dayjs";
 import {
+  Deadline,
   Minute,
   Notes,
   Second,
@@ -59,13 +60,13 @@ const taskViewModel: TaskViewModel = {
   createTask: (
     taskName: TaskName,
     estimatedWorkload: Minute,
-    deadline: Dayjs | null
+    deadline: Deadline
   ) => {},
-  finishTask: (finishedWorkload: Minute) => {},
+  finishTask: () => {},
   updateTask: (
     taskName: TaskName,
     estimatedWorkload: Minute,
-    deadline: Dayjs | null,
+    deadline: Deadline,
     notes: Notes
   ) => {
     console.log({

@@ -1,8 +1,15 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import TaskConfig from "../component/TaskManager/TaskConfig/TaskConfig";
-import { Minute, Notes, TaskId, TaskName, TaskViewModel } from "domain/model";
+import {
+  Deadline,
+  Minute,
+  Notes,
+  TaskId,
+  TaskName,
+  TaskViewModel,
+} from "domain/model";
 import { RecoilRoot } from "recoil";
-import dayjs, { Dayjs } from "dayjs";
+import dayjs from "dayjs";
 
 export default {
   title: "TaskManager/TaskConfig",
@@ -49,13 +56,13 @@ const taskViewModel: TaskViewModel = {
   createTask: (
     taskName: TaskName,
     estimatedWorkload: Minute,
-    deadline: Dayjs | null
+    deadline: Deadline
   ) => {},
-  finishTask: (finishedWorkload: Minute) => {},
+  finishTask: () => {},
   updateTask: (
     taskName: TaskName,
     estimatedWorkload: Minute,
-    deadline: Dayjs | null,
+    deadline: Deadline,
     notes: Notes
   ) => {
     console.log({

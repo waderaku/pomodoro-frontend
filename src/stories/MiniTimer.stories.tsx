@@ -1,8 +1,15 @@
 import { Grid } from "@mui/material";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import MiniTimer from "component/TaskManager/ChildrenTaskList/Timer/MiniTimer";
-import dayjs, { Dayjs } from "dayjs";
-import { Minute, Notes, Second, TaskName, TaskViewModel } from "domain/model";
+import dayjs from "dayjs";
+import {
+  Deadline,
+  Minute,
+  Notes,
+  Second,
+  TaskName,
+  TaskViewModel,
+} from "domain/model";
 import { RecoilRoot } from "recoil";
 
 export default {
@@ -60,13 +67,13 @@ const task: TaskViewModel = {
   createTask: (
     taskName: TaskName,
     estimatedWorkload: Minute,
-    deadline: Dayjs | null
+    deadline: Deadline
   ) => {},
-  finishTask: (finishedWorkload: Minute) => {},
+  finishTask: () => {},
   updateTask: (
     taskName: TaskName,
     estimatedWorkload: Minute,
-    deadline: Dayjs | null,
+    deadline: Deadline,
     notes: Notes
   ) => {
     console.log({

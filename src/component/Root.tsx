@@ -3,12 +3,13 @@ import TaskManager from "./TaskManager";
 import ToolNavi from "./ToolNavi";
 import SideNavi from "./SideNavi";
 import { userIdState, useSelectedTaskId } from "domain/hooks/task";
+import { useEffect } from "react";
 
 const Root = () => {
   const taskId = useSelectedTaskId();
   const testUserId = "testUser";
   const setUserId = useSetRecoilState(userIdState);
-  setUserId(testUserId);
+  useEffect(() => setUserId(testUserId), []);
   return (
     <div>
       <ToolNavi />
