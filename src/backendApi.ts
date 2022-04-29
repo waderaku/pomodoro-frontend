@@ -57,10 +57,11 @@ export const fetchTaskAPI = async (userId: UserId) => {
   const idHeader = {
     userId: userId,
   };
+  const headers = {
+    headers: idHeader,
+  };
   return await axios
-    .get<FetchTaskResponse>(endpoint, {
-      headers: idHeader,
-    })
+    .get<FetchTaskResponse>(endpoint, headers)
     .then((res) => {
       const tupleArray = res.data.task.map(intoDomainTask);
       const taskPool: Map<TaskId, Task> = new Map();
@@ -76,11 +77,32 @@ export const fetchTaskAPI = async (userId: UserId) => {
     });
 };
 
-export const updateTaskAPI = (userId: UserId, task: Task) => {
-  throw NOT_IMPLEMENTED_ERROR;
+export const updateTaskAPI = async (userId: UserId, task: Task) => {
+  const endpoint = BACKEND_URI + "task/" + task.id;
+  const idHeader = {
+    userId: userId,
+  };
+  const headers = {
+    headers: idHeader,
+  };
+  const data = {
+    name: task.name,
+    deadline: task.deadline,
+    estimatedWorkload: task.estimatedWorkload,
+    notes: task.notes,
+    done: task.done,
+  };
+  return await axios
+    .put<null>(endpoint, data, headers)
+    .then((res) => res.data)
+    .catch((err) => {
+      throw new Error(
+        `Unexpected API Response from ${endpoint}.\nError: ${err}`
+      );
+    });
 };
 
-export const registerTaskAPI = (
+export const registerTaskAPI = async (
   userId: UserId,
   parentId: TaskId,
   name: TaskName,
@@ -88,5 +110,26 @@ export const registerTaskAPI = (
   deadline: Deadline,
   notes: Notes
 ) => {
-  throw NOT_IMPLEMENTED_ERROR;
+  const endpoint = BACKEND_URI + "task";
+  const idHeader = {
+    userId: userId,
+  };
+  const headers = {
+    headers: idHeader,
+  };
+  const data = {
+    parentId,
+    name,
+    estimatedWorkload,
+    deadline,
+    notes,
+  };
+  return await axios
+    .post<null>(endpoint, data, headers)
+    .then((res) => res.data)
+    .catch((err) => {
+      throw new Error(
+        `Unexpected API Response from ${endpoint}.\nError: ${err}`
+      );
+    });
 };

@@ -101,8 +101,13 @@ export const useTaskViewModel = (taskId: TaskId): TaskViewModel => {
       estimatedWorkload,
       deadline,
       notes
-    );
-    refresh();
+    )
+      .then(() => {
+        refresh();
+      })
+      .catch((e) => {
+        throw new Error(`Task Creation Failed with error: ${e}`);
+      });
   };
   // TaskSummaryCardでfinishタスクが押下されたとき
   const finishTask = () => {
@@ -110,8 +115,13 @@ export const useTaskViewModel = (taskId: TaskId): TaskViewModel => {
       throw new Error("This task is already done");
     }
     const newTask = { ...task, done: true };
-    updateTaskAPI(userId, newTask);
-    refresh();
+    updateTaskAPI(userId, newTask)
+      .then(() => {
+        refresh();
+      })
+      .catch((e) => {
+        throw new Error(`Task Creation Failed with error: ${e}`);
+      });
   };
   // Configモーダルでtaskの編集がなされた時
   const updateTask = (
