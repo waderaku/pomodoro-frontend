@@ -26,12 +26,16 @@ interface TaskData {
 interface APITask {
   id: TaskId;
   taskData: TaskData;
-  rootTaskId: TaskId[];
 }
 
 interface TaskTuple {
   id: TaskId;
   task: Task;
+}
+
+interface FetchTaskResponse {
+  task: APITask[];
+  rootTaskId: TaskId[];
 }
 
 const intoDomainTask = (apitask: APITask): TaskTuple => {
@@ -49,19 +53,19 @@ const intoDomainTask = (apitask: APITask): TaskTuple => {
 };
 
 export const fetchTaskAPI = async (userId: UserId) => {
-  const endpoint = BACKEND_URI + "/task";
+  const endpoint = BACKEND_URI + "task";
   const idHeader = {
     userId: userId,
   };
   return await axios
-    .get<APITask[]>(endpoint, {
+    .get<FetchTaskResponse>(endpoint, {
       headers: idHeader,
     })
     .then((res) => {
-      const tupleArray = res.data.map(intoDomainTask);
+      const tupleArray = res.data.task.map(intoDomainTask);
       const taskPool: Map<TaskId, Task> = new Map();
       tupleArray.map((tuple) => {
-        return taskPool.set(tuple.id, tuple.task);
+        taskPool.set(tuple.id, tuple.task);
       });
       return taskPool;
     })

@@ -19,6 +19,11 @@ export type Task = {
   notes: Notes;
 };
 
+export type ChildrenTaskCount = {
+  finishedTaskCount: number;
+  unfinishedTaskCount: number;
+};
+
 export type TaskViewModel = {
   task: Task;
   createTask: (

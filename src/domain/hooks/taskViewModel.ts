@@ -1,10 +1,11 @@
-import { fetchTaskAPI, registerTaskAPI, updateTaskAPI } from "backend_api";
+import { fetchTaskAPI, registerTaskAPI, updateTaskAPI } from "backendApi";
 import {
   atom,
   selector,
   selectorFamily,
   useRecoilValue,
   useRecoilRefresher_UNSTABLE,
+  useRecoilValueLoadable,
 } from "recoil";
 import {
   TaskViewModel,
@@ -15,6 +16,7 @@ import {
   Minute,
   Notes,
   Deadline,
+  ChildrenTaskCount,
 } from "../model";
 
 const taskState = selectorFamily<Task, TaskId>({
@@ -32,9 +34,32 @@ const taskState = selectorFamily<Task, TaskId>({
     },
 });
 
+const childrenTaskCountState = selectorFamily<ChildrenTaskCount, TaskId>({
+  key: "childrenTaskCount",
+  get:
+    (taskId) =>
+    ({ get }) => {
+      const task = get(taskState(taskId));
+      const finishedTaskCount = task.childrenIdList.filter(
+        (taskId) => get(taskState(taskId)).done
+      ).length;
+      const unfinishedTaskCount = task.childrenIdList.filter(
+        (taskId) => !get(taskState(taskId)).done
+      ).length;
+      return {
+        finishedTaskCount,
+        unfinishedTaskCount,
+      };
+    },
+});
+
+export const useFinishedChildrenTaskCount = (taskId: TaskId) => {
+  return useRecoilValue(childrenTaskCountState(taskId));
+};
+
 // 現在選択されているTaskManagerに表示するべきTaskのIdを返す
 export const useSelectedTaskId = (): TaskId => {
-  return "taskId1";
+  return "task1";
   // throw NOT_IMPLEMENTED_ERROR;
 };
 
@@ -53,6 +78,10 @@ export const taskPoolState = selector<Map<TaskId, Task>>({
     return taskPool;
   },
 });
+
+export const useIsTaskLoaded = () => {
+  return useRecoilValueLoadable(taskPoolState).state === "hasValue";
+};
 
 export const useTaskViewModel = (taskId: TaskId): TaskViewModel => {
   const task = useRecoilValue(taskState(taskId));
@@ -84,7 +113,6 @@ export const useTaskViewModel = (taskId: TaskId): TaskViewModel => {
     updateTaskAPI(userId, newTask);
     refresh();
   };
-
   // Configモーダルでtaskの編集がなされた時
   const updateTask = (
     taskName: TaskName,
@@ -102,11 +130,11 @@ export const useTaskViewModel = (taskId: TaskId): TaskViewModel => {
     updateTaskAPI(userId, newTask);
     refresh();
   };
+
   return {
     task,
     createTask,
     finishTask,
     updateTask,
   };
-  // return ({...taskPropertys},createTask,finishTask)
 };

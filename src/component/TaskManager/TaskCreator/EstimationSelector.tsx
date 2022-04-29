@@ -51,7 +51,6 @@ const EstimationSelector = (props: {
           getOptionLabel={(option) => (option ? option.toString() : "")}
           onChange={(_: any, newValue: number | null) => {
             if (newValue) {
-              console.log(newValue);
               props.setNumClock(newValue as number);
             }
           }}

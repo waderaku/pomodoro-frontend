@@ -1,7 +1,11 @@
 import { ListItemButton, ListItemText, Grid, Paper } from "@mui/material";
 import PlayCircleIcon from "@mui/icons-material/PlayCircle";
 import DoneOutlineIcon from "@mui/icons-material/DoneOutline";
-const ChildTaskCard = () => {
+import { TaskId } from "domain/model";
+import { useTaskViewModel } from "domain/hooks/taskViewModel";
+const ChildTaskCard = (props: { taskId: TaskId }) => {
+  const taskViewModel = useTaskViewModel(props.taskId);
+
   return (
     <Paper
       sx={{
@@ -11,7 +15,7 @@ const ChildTaskCard = () => {
       <Grid container alignItems="center" justifyContent="space-between">
         <Grid item xs={10.5}>
           <ListItemButton>
-            <ListItemText primary="TaskName"></ListItemText>
+            <ListItemText primary={taskViewModel.task.name}></ListItemText>
           </ListItemButton>
         </Grid>
         <Grid item xs={1.5}>

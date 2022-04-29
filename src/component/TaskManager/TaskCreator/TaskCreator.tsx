@@ -2,7 +2,7 @@ import { TextField, Grid, Paper } from "@mui/material";
 import EstimationSelector from "./EstimationSelector";
 import { useState } from "react";
 import { TaskId } from "domain/model";
-import { useTaskViewModel } from "domain/hooks/task";
+import { useTaskViewModel } from "domain/hooks/taskViewModel";
 
 const TaskCreator = (props: { taskId: TaskId }) => {
   const taskViewModel = useTaskViewModel(props.taskId);
