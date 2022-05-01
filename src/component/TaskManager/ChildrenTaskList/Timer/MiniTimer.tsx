@@ -5,11 +5,11 @@ import StopCircleIcon from "@mui/icons-material/StopCircle";
 import BrandingWatermarkIcon from "@mui/icons-material/BrandingWatermark";
 import { useTimer } from "react-timer-hook";
 import { FC } from "react";
-import { Second, Task } from "domain/model";
+import { Second } from "domain/model";
 
 const MiniTimer = (props: {
   expiryTime: Second;
-  isTask: Boolean;
+  isTask: boolean;
   openWindow: (time: Second) => void;
 }) => {
   const { expiryTime } = props;

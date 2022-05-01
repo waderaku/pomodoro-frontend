@@ -1,8 +1,15 @@
 import { Grid } from "@mui/material";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import MiniTimer from "component/TaskManager/ChildrenTaskList/Timer/MiniTimer";
-import dayjs, { Dayjs } from "dayjs";
-import { Minute, Notes, Second, Task, TaskName } from "domain/model";
+import dayjs from "dayjs";
+import {
+  Deadline,
+  Minute,
+  Notes,
+  Second,
+  TaskName,
+  TaskViewModel,
+} from "domain/model";
 import { RecoilRoot } from "recoil";
 
 export default {
@@ -12,7 +19,7 @@ export default {
 
 const RecoilMiniTimer = (props: {
   expiryTime: Second;
-  isTask: Boolean;
+  isTask: boolean;
   openWindow: (time: Second) => void;
 }) => {
   return (
@@ -35,31 +42,38 @@ const RecoilMiniTimer = (props: {
   );
 };
 
-const Template: ComponentStory<typeof MiniTimer> = (args) => (
+const Template: ComponentStory<typeof MiniTimer> = (args: {
+  expiryTime: Second;
+  isTask: boolean;
+  openWindow: (time: Second) => void;
+}) => (
   <RecoilRoot>
     <RecoilMiniTimer {...args} />
   </RecoilRoot>
 );
 
-const tasks: Task = {
-  id: "1",
-  name: "テストタスク",
-  childrenIdList: ["2", "3", "4"],
-  finishedWorkload: 2,
-  estimatedWorkload: 2,
-  deadline: dayjs(new Date()),
-  notes:
-    "テストテストテスト \r\nテストテストテスト \r\nテストテストテスト \r\n",
+const task: TaskViewModel = {
+  task: {
+    id: "1",
+    name: "テストタスク",
+    childrenIdList: ["2", "3", "4"],
+    done: false,
+    finishedWorkload: 2,
+    estimatedWorkload: 2,
+    deadline: dayjs(),
+    notes:
+      "テストテストテスト \r\nテストテストテスト \r\nテストテストテスト \r\n",
+  },
   createTask: (
     taskName: TaskName,
     estimatedWorkload: Minute,
-    deadline: Dayjs
+    deadline: Deadline
   ) => {},
-  finishTask: (finishedWorkload: Minute) => {},
+  finishTask: () => {},
   updateTask: (
     taskName: TaskName,
     estimatedWorkload: Minute,
-    deadline: Dayjs,
+    deadline: Deadline,
     notes: Notes
   ) => {
     console.log({

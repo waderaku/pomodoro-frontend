@@ -1,7 +1,5 @@
 import { useState } from "react";
-import { useTask } from "domain/hooks/task";
-import { Task, TaskId } from "domain/model";
-import dayjs from "dayjs";
+import { TaskId, TaskViewModel } from "domain/model";
 import {
   Box,
   Card,
@@ -21,7 +19,7 @@ import AccessTimeIcon from "@mui/icons-material/AccountCircle";
 const TaskConfig = (props: {
   taskId: TaskId;
   closeModal: () => void;
-  tasks: Task;
+  taskViewModel: TaskViewModel;
 }) => {
   // 下記3行:本番用コード
   // const { name, estimatedWorkload, deadline, notes, updateTask } = useTask(
@@ -29,20 +27,16 @@ const TaskConfig = (props: {
   // );
 
   // 下記1行:テスト用コード
-  const { name, estimatedWorkload, deadline, notes, updateTask } = props.tasks;
+  const updateTask = props.taskViewModel.updateTask;
+  const { name, estimatedWorkload, deadline, notes } = props.taskViewModel.task;
 
   const [nameState, setNameState] = useState(name);
   const [estimatedWorkloadState, setEstimatedWorkloadState] =
     useState(estimatedWorkload);
-  const [deadlineState, setDeadlineState] = useState(deadline.toDate());
+  const [deadlineState, setDeadlineState] = useState(deadline);
   const [notesState, setNotesState] = useState(notes);
   const handleUpdateTask = () => {
-    updateTask(
-      nameState,
-      estimatedWorkloadState,
-      dayjs(deadlineState),
-      notesState
-    );
+    updateTask(nameState, estimatedWorkloadState, deadlineState, notesState);
   };
   return (
     <Box m={1}>

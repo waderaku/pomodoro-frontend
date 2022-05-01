@@ -1,21 +1,15 @@
-import { List, ListItem, ListItemButton, Card } from "@mui/material";
+import { List, ListItem } from "@mui/material";
+import { TaskId } from "domain/model";
 import ChildTaskCard from "./ChildTaskCard";
 
-const ChildrenTaskList = () => {
+const ChildrenTaskList = (props: { childrenIdList: TaskId[] }) => {
   return (
     <List>
-      <ListItem>
-        <ChildTaskCard />
-      </ListItem>
-      <ListItem>
-        <ChildTaskCard />
-      </ListItem>
-      <ListItem>
-        <ChildTaskCard />
-      </ListItem>
-      <ListItem>
-        <ChildTaskCard />
-      </ListItem>
+      {props.childrenIdList.map((taskId, key) => (
+        <ListItem key={key}>
+          <ChildTaskCard taskId={taskId} />
+        </ListItem>
+      ))}
     </List>
   );
 };

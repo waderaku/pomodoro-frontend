@@ -1,7 +1,15 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import FullwindowTimer from "component/TaskManager/ChildrenTaskList/Timer/FullWindowTimer";
-import dayjs, { Dayjs } from "dayjs";
-import { Minute, Notes, Second, Task, TaskName } from "domain/model";
+import dayjs from "dayjs";
+import {
+  Deadline,
+  Minute,
+  Notes,
+  Second,
+  Task,
+  TaskName,
+  TaskViewModel,
+} from "domain/model";
 import { RecoilRoot } from "recoil";
 
 export default {
@@ -11,8 +19,8 @@ export default {
 
 const RecoilFullwindowTimer = (props: {
   expiryTime: Second;
-  isTask: Boolean;
-  tasks: Task;
+  isTask: boolean;
+  task: Task;
   closeWindow: (time: Second) => void;
 }) => {
   return (
@@ -20,37 +28,45 @@ const RecoilFullwindowTimer = (props: {
     <FullwindowTimer
       expiryTime={props.expiryTime}
       isTask={props.isTask}
-      tasks={props.tasks}
+      task={props.task}
       closeWindow={props.closeWindow}
     />
   );
 };
 
-const Template: ComponentStory<typeof FullwindowTimer> = (args) => (
+const Template: ComponentStory<typeof FullwindowTimer> = (args: {
+  expiryTime: Second;
+  isTask: boolean;
+  task: Task;
+  closeWindow: (time: Second) => void;
+}) => (
   <RecoilRoot>
     <RecoilFullwindowTimer {...args} />
   </RecoilRoot>
 );
 
-const tasks: Task = {
-  id: "1",
-  name: "テストタスク",
-  childrenIdList: ["2", "3", "4"],
-  finishedWorkload: 2,
-  estimatedWorkload: 2,
-  deadline: dayjs(new Date()),
-  notes:
-    "テストテストテスト \r\nテストテストテスト \r\nテストテストテスト \r\n",
+const taskViewModel: TaskViewModel = {
+  task: {
+    id: "1",
+    name: "テストタスク",
+    childrenIdList: ["2", "3", "4"],
+    done: false,
+    finishedWorkload: 2,
+    estimatedWorkload: 2,
+    deadline: dayjs(),
+    notes:
+      "テストテストテスト \r\nテストテストテスト \r\nテストテストテスト \r\n",
+  },
   createTask: (
     taskName: TaskName,
     estimatedWorkload: Minute,
-    deadline: Dayjs
+    deadline: Deadline
   ) => {},
-  finishTask: (finishedWorkload: Minute) => {},
+  finishTask: () => {},
   updateTask: (
     taskName: TaskName,
     estimatedWorkload: Minute,
-    deadline: Dayjs,
+    deadline: Deadline,
     notes: Notes
   ) => {
     console.log({
@@ -65,11 +81,11 @@ export const taskTime = Template.bind({});
 taskTime.args = {
   expiryTime: 25 * 60,
   isTask: true,
-  tasks: tasks,
+  task: taskViewModel.task,
 };
 export const breakTime = Template.bind({});
 breakTime.args = {
   expiryTime: 5 * 60,
   isTask: false,
-  tasks: tasks,
+  task: taskViewModel.task,
 };

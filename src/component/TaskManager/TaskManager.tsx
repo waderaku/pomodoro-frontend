@@ -1,12 +1,8 @@
 import { Typography, Stack, Card } from "@mui/material";
-import "@fontsource/roboto/300.css";
-import "@fontsource/roboto/400.css";
-import "@fontsource/roboto/500.css";
-import "@fontsource/roboto/700.css";
 import TaskSummaryCard from "./TaskSummaryCard";
 import TaskCreator from "./TaskCreator";
 import ChildrenTaskList from "./ChildrenTaskList";
-import { useTaskViewModel } from "domain/hooks/task";
+import { useTaskViewModel } from "domain/hooks/taskViewModel";
 import { TaskId } from "domain/model";
 
 const TaskManager = (props: { taskId: TaskId }) => {
@@ -18,9 +14,9 @@ const TaskManager = (props: { taskId: TaskId }) => {
           {taskViewModel.task.name}
         </Typography>
       </Card>
-      <TaskSummaryCard />
-      <TaskCreator taskId={""} />
-      <ChildrenTaskList />
+      <TaskSummaryCard task={taskViewModel.task} />
+      <TaskCreator taskId={props.taskId} />
+      <ChildrenTaskList childrenIdList={taskViewModel.task.childrenIdList} />
     </Stack>
   );
 };

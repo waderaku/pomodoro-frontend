@@ -9,8 +9,8 @@ import { Second, Task } from "domain/model";
 
 const FullwindowTimer = (props: {
   expiryTime: Second;
-  isTask: Boolean;
-  tasks: Task;
+  isTask: boolean;
+  task: Task;
   closeWindow: (time: Second) => void;
 }) => {
   // 下記3行:本番用コード
@@ -19,7 +19,7 @@ const FullwindowTimer = (props: {
   // );
 
   // 下記1行:テスト用コード
-  const { name } = props.tasks;
+  const { name } = props.task;
   const { expiryTime } = props;
   const color = props.isTask ? "#FF8A80" : "#82B1FF";
 
