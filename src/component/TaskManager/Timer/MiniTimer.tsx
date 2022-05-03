@@ -4,16 +4,14 @@ import PauseCircleIcon from "@mui/icons-material/PauseCircle";
 import StopCircleIcon from "@mui/icons-material/StopCircle";
 import BrandingWatermarkIcon from "@mui/icons-material/BrandingWatermark";
 import { useTimer } from "react-timer-hook";
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { Second } from "domain/model";
+import { useTimerState } from "domain/hooks/timerViewModels";
 
-const MiniTimer = (props: {
-  expiryTime: Second;
-  isTask: boolean;
-  openWindow: (time: Second) => void;
-}) => {
-  const { expiryTime } = props;
-  const color = props.isTask ? "#FF8A80" : "#82B1FF";
+const MiniTimer = () => {
+  const { timer, changeFullWindow, updateRemainTime, changeTaskBreak } =
+    useTimerState();
+  const color = timer.isTask ? "#FF8A80" : "#82B1FF";
 
   const setTime = (time: Second): Date => {
     const expiryTimestamp = new Date();
@@ -21,13 +19,17 @@ const MiniTimer = (props: {
     return expiryTimestamp;
   };
 
-  const expiryTimestamp = setTime(expiryTime);
+  const expiryTimestamp = setTime(timer.setTime);
 
   const { seconds, minutes, isRunning, start, pause, restart } = useTimer({
     expiryTimestamp,
-    onExpire: () => console.warn("onExpire called"),
+    onExpire: () => changeTaskBreak,
     autoStart: true,
   });
+
+  // useEffect(() => {
+  //   updateRemainTime(minutes * 60 + seconds);
+  // }, [seconds, minutes]);
 
   const Buttons: FC = () => {
     if (isRunning) {
@@ -65,7 +67,8 @@ const MiniTimer = (props: {
               color="primary"
               size="large"
               onClick={() => {
-                const resetTime = setTime(expiryTime);
+                // TODO ユーザー設定から1clockの時間取得
+                const resetTime = setTime(timer.isTask ? 25 * 60 : 5 * 60);
                 restart(resetTime, false);
               }}
             >
@@ -90,7 +93,7 @@ const MiniTimer = (props: {
             color="primary"
             size="large"
             onClick={() => {
-              props.openWindow(minutes * 60 + seconds);
+              changeFullWindow();
             }}
           >
             <BrandingWatermarkIcon fontSize="medium" />

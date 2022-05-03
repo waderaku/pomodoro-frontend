@@ -133,3 +133,30 @@ export const registerTaskAPI = async (
       );
     });
 };
+export const registerEventAPI = async (
+  userId: UserId,
+  taskId: TaskId,
+  start: Date,
+  end: Date
+) => {
+  const endpoint = BACKEND_URI + "event";
+  const idHeader = {
+    userId: userId,
+  };
+  const headers = {
+    headers: idHeader,
+  };
+  const data = {
+    taskId,
+    start,
+    end,
+  };
+  return await axios
+    .post<null>(endpoint, data, headers)
+    .then((res) => res.data)
+    .catch((err) => {
+      throw new Error(
+        `Unexpected API Response from ${endpoint}.\nError: ${err}`
+      );
+    });
+};

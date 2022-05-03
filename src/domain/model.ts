@@ -1,3 +1,4 @@
+import { Timer } from "@mui/icons-material";
 import { Dayjs } from "dayjs";
 
 export type UserId = string;
@@ -41,8 +42,25 @@ export type TaskViewModel = {
   ) => void;
 };
 
+// export type Timer = {
+//   task: TaskViewModel;
+//   start: Dayjs;
+//   length: Minute;
+// };
 export type Timer = {
-  task: TaskViewModel;
+  taskId: TaskId;
   start: Dayjs;
-  length: Minute;
+  isTask: boolean;
+  setTime: Second;
+  remainTime: Second;
+  timerWorking: string;
+};
+
+export type TimerViewModel = {
+  timer: Timer;
+  startTask: (taskId: TaskId) => void;
+  updateRemainTime: (remainTime: Second) => void;
+  changeTaskBreak: () => void;
+  changeMiniWindow: () => void;
+  changeFullWindow: () => void;
 };
