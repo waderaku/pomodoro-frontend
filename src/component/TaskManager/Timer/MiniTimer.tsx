@@ -3,33 +3,22 @@ import PlayCircleFilledWhiteIcon from "@mui/icons-material/PlayCircleFilledWhite
 import PauseCircleIcon from "@mui/icons-material/PauseCircle";
 import StopCircleIcon from "@mui/icons-material/StopCircle";
 import BrandingWatermarkIcon from "@mui/icons-material/BrandingWatermark";
-import { useTimer } from "react-timer-hook";
-import { FC, useEffect } from "react";
-import { Second } from "domain/model";
-import { useTimerState } from "domain/hooks/timerViewModels";
+import { FC } from "react";
+import { useTimerViewModel } from "domain/hooks/timerViewModels";
 
 const MiniTimer = () => {
-  const { timer, changeFullWindow, updateRemainTime, changeTaskBreak } =
-    useTimerState();
-  const color = timer.isTask ? "#FF8A80" : "#82B1FF";
-
-  const setTime = (time: Second): Date => {
-    const expiryTimestamp = new Date();
-    expiryTimestamp.setSeconds(expiryTimestamp.getSeconds() + time);
-    return expiryTimestamp;
-  };
-
-  const expiryTimestamp = setTime(timer.setTime);
-
-  const { seconds, minutes, isRunning, start, pause, restart } = useTimer({
-    expiryTimestamp,
-    onExpire: () => changeTaskBreak,
-    autoStart: true,
-  });
-
-  // useEffect(() => {
-  //   updateRemainTime(minutes * 60 + seconds);
-  // }, [seconds, minutes]);
+  const {
+    timerState,
+    seconds,
+    minutes,
+    isRunning,
+    start,
+    pause,
+    restart,
+    setTime,
+    changeFullWindow,
+  } = useTimerViewModel();
+  const color = timerState.isTask ? "#FF8A80" : "#82B1FF";
 
   const Buttons: FC = () => {
     if (isRunning) {
@@ -68,7 +57,7 @@ const MiniTimer = () => {
               size="large"
               onClick={() => {
                 // TODO ユーザー設定から1clockの時間取得
-                const resetTime = setTime(timer.isTask ? 25 * 60 : 5 * 60);
+                const resetTime = setTime(timerState.isTask ? 25 * 60 : 5 * 60);
                 restart(resetTime, false);
               }}
             >

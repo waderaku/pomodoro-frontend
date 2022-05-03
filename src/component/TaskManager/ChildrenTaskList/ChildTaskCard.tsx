@@ -3,10 +3,10 @@ import PlayCircleIcon from "@mui/icons-material/PlayCircle";
 import DoneOutlineIcon from "@mui/icons-material/DoneOutline";
 import { TaskId } from "domain/model";
 import { useTaskViewModel } from "domain/hooks/taskViewModel";
-import { useTimerState } from "domain/hooks/timerViewModels";
+import { useTimerViewModel } from "domain/hooks/timerViewModels";
 const ChildTaskCard = (props: { taskId: TaskId }) => {
   const taskViewModel = useTaskViewModel(props.taskId);
-  const { startTask } = useTimerState();
+  const { startTask } = useTimerViewModel();
 
   return (
     <Paper

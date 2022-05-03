@@ -3,37 +3,24 @@ import PlayCircleFilledWhiteIcon from "@mui/icons-material/PlayCircleFilledWhite
 import PauseCircleIcon from "@mui/icons-material/PauseCircle";
 import BrandingWatermarkIcon from "@mui/icons-material/BrandingWatermark";
 import StopCircleIcon from "@mui/icons-material/StopCircle";
-import { useTimer } from "react-timer-hook";
-import { FC, useEffect } from "react";
-import { Second } from "domain/model";
-import { useTimerState } from "domain/hooks/timerViewModels";
-import dayjs from "dayjs";
+import { FC } from "react";
+import { useTimerViewModel } from "domain/hooks/timerViewModels";
 import { useTaskViewModel } from "domain/hooks/taskViewModel";
 
 const FullwindowTimer = () => {
-  const { timer, changeMiniWindow, updateRemainTime, changeTaskBreak } =
-    useTimerState();
-  const { task } = useTaskViewModel(timer.taskId);
-  const color = timer.isTask ? "#FF8A80" : "#82B1FF";
-
-  const setTime = (time: Second): Date => {
-    const expiryTimestamp = new Date();
-    expiryTimestamp.setSeconds(expiryTimestamp.getSeconds() + time);
-    return expiryTimestamp;
-  };
-
-  const expiryTimestamp = setTime(timer.setTime);
-
-  const { seconds, minutes, isRunning, start, pause, restart } = useTimer({
-    expiryTimestamp,
-    onExpire: () => changeTaskBreak,
-    autoStart: true,
-  });
-  const remaintime = seconds + minutes * 60;
-  updateRemainTime(remaintime);
-  // useEffect(() => {
-  //   updateRemainTime(minutes * 60 + seconds);
-  // }, [seconds, minutes]);
+  const {
+    timerState,
+    seconds,
+    minutes,
+    isRunning,
+    start,
+    pause,
+    restart,
+    setTime,
+    changeMiniWindow,
+  } = useTimerViewModel();
+  const { task } = useTaskViewModel(timerState.taskId);
+  const color = timerState.isTask ? "#FF8A80" : "#82B1FF";
 
   const Buttons: FC = () => {
     if (isRunning) {
@@ -70,7 +57,7 @@ const FullwindowTimer = () => {
               size="large"
               onClick={() => {
                 // TODO ユーザー設定から1clockの時間取得
-                const resetTime = setTime(timer.isTask ? 25 * 60 : 5 * 60);
+                const resetTime = setTime(timerState.isTask ? 25 * 60 : 5 * 60);
                 restart(resetTime, false);
               }}
             >
@@ -110,7 +97,7 @@ const FullwindowTimer = () => {
         <Grid item>
           <Box m={1} mt={8}>
             <Typography variant="h3">
-              {timer.isTask ? "TaskTime" : "Break time"}
+              {timerState.isTask ? "TaskTime" : "Break time"}
             </Typography>
           </Box>
         </Grid>

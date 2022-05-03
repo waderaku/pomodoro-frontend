@@ -1,8 +1,8 @@
-import { NoEncryption } from "@mui/icons-material";
 import { registerEventAPI } from "backendApi";
 import dayjs from "dayjs";
 import { Second, TaskId, Timer, TimerViewModel } from "domain/model";
-import { atom, useRecoilValue, useRecoilState, selector } from "recoil";
+import { useTimer } from "react-timer-hook";
+import { atom, useRecoilValue, useRecoilState } from "recoil";
 import { userIdState } from "./taskViewModel";
 
 export const timerState = atom<Timer>({
@@ -10,96 +10,120 @@ export const timerState = atom<Timer>({
   default: {
     taskId: "",
     start: dayjs(),
-    isTask: true,
-    setTime: 0,
-    remainTime: 0,
+    isTask: false,
+    setTime: 1,
     timerWorking: "none",
   },
 });
 
-export const useTimerState = (): TimerViewModel => {
-  const [preTimer, setTimer] = useRecoilState(timerState);
+export const useTimerViewModel = (): TimerViewModel => {
+  const [timer, setTimer] = useRecoilState(timerState);
   const userId = useRecoilValue(userIdState);
-  const updateTimer = (timer: Timer) => {
-    if (preTimer.taskId !== timer.taskId && preTimer.taskId) {
-      registerEventAPI(
-        userId,
-        preTimer.taskId,
-        preTimer.start.toDate(),
-        dayjs().toDate()
-      ).catch((e) => {
-        throw new Error(`Event Creation Failed with error: ${e}`);
-      });
-    }
-    setTimer(timer);
+
+  const setTime = (time: Second): Date => {
+    const expiryTimestamp = new Date();
+    expiryTimestamp.setSeconds(expiryTimestamp.getSeconds() + time);
+    return expiryTimestamp;
   };
+
+  const expiryTimestamp = setTime(timer.setTime);
+
+  const { seconds, minutes, isRunning, start, pause, restart } = useTimer({
+    expiryTimestamp,
+    onExpire: () => changeTaskBreak,
+    autoStart: true,
+  });
+
+  const updateTimer = (newTimerState: Timer, restartFlg: boolean) => {
+    setTimer(newTimerState);
+    const resetTime = setTime(newTimerState.setTime);
+    restart(resetTime, restartFlg);
+  };
+
   const startTask = (taskId: TaskId) => {
-    updateTimer({
-      taskId: taskId,
-      start: dayjs(),
-      isTask: true,
-      // TODO ユーザー設定から1clockの時間取得
-      setTime: 25 * 60,
-      remainTime: 0,
-      timerWorking: "Full",
-    });
-  };
-  const updateRemainTime = (remainTime: Second) => {
-    updateTimer({
-      taskId: preTimer.taskId,
-      start: preTimer.start,
-      isTask: preTimer.isTask,
-      setTime: preTimer.setTime,
-      remainTime: remainTime,
-      timerWorking: preTimer.timerWorking,
-    });
-  };
-  const changeTaskBreak = () => {
-    if (preTimer.isTask) {
+    if (timer.taskId !== taskId && timer.taskId) {
       registerEventAPI(
         userId,
-        preTimer.taskId,
-        preTimer.start.toDate(),
+        timer.taskId,
+        timer.start.toDate(),
         dayjs().toDate()
       ).catch((e) => {
         throw new Error(`Event Creation Failed with error: ${e}`);
       });
     }
-    updateTimer({
-      taskId: preTimer.taskId,
-      start: dayjs(),
-      isTask: !preTimer.isTask,
-      // TODO ユーザー設定から1clockの時間取得
-      setTime: !preTimer.isTask ? 25 * 60 : 5 * 60,
-      remainTime: 0,
-      timerWorking: preTimer.timerWorking,
-    });
+    updateTimer(
+      {
+        taskId: taskId,
+        start: dayjs(),
+        isTask: true,
+        // TODO ユーザー設定から1clockの時間取得
+        setTime: 25 * 60,
+        timerWorking: "Full",
+      },
+      true
+    );
   };
+
+  const changeTaskBreak = () => {
+    if (timer.isTask && timer.taskId) {
+      registerEventAPI(
+        userId,
+        timer.taskId,
+        timer.start.toDate(),
+        dayjs().toDate()
+      ).catch((e) => {
+        throw new Error(`Event Creation Failed with error: ${e}`);
+      });
+    }
+    updateTimer(
+      {
+        taskId: timer.taskId,
+        start: dayjs(),
+        isTask: !timer.isTask,
+        // TODO ユーザー設定から1clockの時間取得
+        setTime: !timer.isTask ? 25 * 60 : 5 * 60,
+        timerWorking: timer.timerWorking,
+      },
+      true
+    );
+  };
+
   const changeMiniWindow = () => {
-    updateTimer({
-      taskId: preTimer.taskId,
-      start: preTimer.start,
-      isTask: preTimer.isTask,
-      setTime: preTimer.remainTime,
-      remainTime: 0,
-      timerWorking: "Mini",
-    });
+    updateTimer(
+      {
+        taskId: timer.taskId,
+        start: timer.start,
+        isTask: timer.isTask,
+        setTime: seconds + minutes * 60,
+        timerWorking: "Mini",
+      },
+      isRunning
+    );
   };
+
   const changeFullWindow = () => {
-    updateTimer({
-      taskId: preTimer.taskId,
-      start: preTimer.start,
-      isTask: preTimer.isTask,
-      setTime: preTimer.remainTime,
-      remainTime: 0,
-      timerWorking: "Full",
-    });
+    updateTimer(
+      {
+        taskId: timer.taskId,
+        start: timer.start,
+        isTask: timer.isTask,
+        setTime: seconds + minutes * 60,
+        timerWorking: "Full",
+      },
+      isRunning
+    );
   };
+
   return {
-    timer: preTimer,
+    timerState: timer,
+    seconds,
+    minutes,
+    isRunning,
+    start,
+    pause,
+    restart,
+    setTime,
     startTask,
-    updateRemainTime,
-    changeTaskBreak,
     changeMiniWindow,
     changeFullWindow,
   };

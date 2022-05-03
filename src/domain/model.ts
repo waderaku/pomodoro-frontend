@@ -52,15 +52,20 @@ export type Timer = {
   start: Dayjs;
   isTask: boolean;
   setTime: Second;
-  remainTime: Second;
+  // remainTime: Second;
   timerWorking: string;
 };
 
 export type TimerViewModel = {
-  timer: Timer;
+  timerState: Timer;
+  seconds: Second;
+  minutes: Minute;
+  isRunning: boolean;
+  start: () => void;
+  pause: () => void;
+  restart: (newExpiryTimestamp: Date, autoStart?: boolean | undefined) => void;
+  setTime: (time: Second) => Date;
   startTask: (taskId: TaskId) => void;
-  updateRemainTime: (remainTime: Second) => void;
-  changeTaskBreak: () => void;
   changeMiniWindow: () => void;
   changeFullWindow: () => void;
 };
