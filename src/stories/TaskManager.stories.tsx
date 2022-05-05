@@ -1,7 +1,11 @@
 import { Typography } from "@mui/material";
 import { ComponentMeta, ComponentStory } from "@storybook/react";
 import TaskManager from "component/TaskManager";
-import { useIsTaskLoaded, userIdState } from "domain/hooks/taskViewModel";
+import {
+  selectedTaskIdState,
+  useIsTaskLoaded,
+  userIdState,
+} from "domain/hooks/taskViewModel";
 import { TaskId } from "domain/model";
 import { useEffect } from "react";
 import { RecoilRoot, useSetRecoilState } from "recoil";
@@ -14,16 +18,20 @@ export default {
 const RecoilTaskManager = (props: { taskId: TaskId }) => {
   const testUserId = "testUser";
   const setUserId = useSetRecoilState(userIdState);
-  useEffect(() => setUserId(testUserId), []);
+  const setSelectedTaskId = useSetRecoilState(selectedTaskIdState);
+  useEffect(() => {
+    setUserId(testUserId);
+    setSelectedTaskId(props.taskId);
+  }, []);
   const loaded = useIsTaskLoaded();
   if (loaded) {
-    return <TaskManager taskId={props.taskId} />;
+    return <TaskManager />;
   } else {
     return <Typography>Not Loaded</Typography>;
   }
 };
 
-const Template: ComponentStory<typeof TaskManager> = (props: {
+const Template: ComponentStory<typeof RecoilTaskManager> = (props: {
   taskId: TaskId;
 }) => {
   return (

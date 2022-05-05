@@ -6,6 +6,7 @@ import {
   useRecoilValue,
   useRecoilRefresher_UNSTABLE,
   useRecoilValueLoadable,
+  useSetRecoilState,
 } from "recoil";
 import {
   TaskViewModel,
@@ -57,10 +58,14 @@ export const useFinishedChildrenTaskCount = (taskId: TaskId) => {
   return useRecoilValue(childrenTaskCountState(taskId));
 };
 
+// 現在のTaskManagerに表示されるべきTaskのId
+export const selectedTaskIdState = atom<TaskId>({
+  key: "selectedTaskId",
+});
+
 // 現在選択されているTaskManagerに表示するべきTaskのIdを返す
 export const useSelectedTaskId = (): TaskId => {
-  return "task1";
-  // throw NOT_IMPLEMENTED_ERROR;
+  return useRecoilValue(selectedTaskIdState);
 };
 
 export const userIdState = atom<UserId>({
@@ -147,4 +152,9 @@ export const useTaskViewModel = (taskId: TaskId): TaskViewModel => {
     finishTask,
     updateTask,
   };
+};
+
+export const useToManager = () => {
+  const setSelectedTaskId = useSetRecoilState(selectedTaskIdState);
+  return (taskId: TaskId) => setSelectedTaskId(taskId);
 };
