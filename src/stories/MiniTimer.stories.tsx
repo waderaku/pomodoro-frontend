@@ -1,15 +1,7 @@
 import { Grid } from "@mui/material";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import MiniTimer from "component/TaskManager/ChildrenTaskList/Timer/MiniTimer";
-import dayjs from "dayjs";
-import {
-  Deadline,
-  Minute,
-  Notes,
-  Second,
-  TaskName,
-  TaskViewModel,
-} from "domain/model";
+import { Second } from "domain/model";
 import { RecoilRoot } from "recoil";
 
 export default {
@@ -52,38 +44,6 @@ const Template: ComponentStory<typeof MiniTimer> = (args: {
   </RecoilRoot>
 );
 
-const task: TaskViewModel = {
-  task: {
-    id: "1",
-    name: "テストタスク",
-    childrenIdList: ["2", "3", "4"],
-    done: false,
-    finishedWorkload: 2,
-    estimatedWorkload: 2,
-    deadline: dayjs(),
-    notes:
-      "テストテストテスト \r\nテストテストテスト \r\nテストテストテスト \r\n",
-  },
-  createTask: (
-    taskName: TaskName,
-    estimatedWorkload: Minute,
-    deadline: Deadline
-  ) => {},
-  finishTask: () => {},
-  updateTask: (
-    taskName: TaskName,
-    estimatedWorkload: Minute,
-    deadline: Deadline,
-    notes: Notes
-  ) => {
-    console.log({
-      taskName: taskName,
-      estimatedWorkload: estimatedWorkload,
-      deadline: deadline,
-      notes: notes,
-    });
-  },
-};
 export const taskTime = Template.bind({});
 taskTime.args = {
   expiryTime: 25 * 60,
