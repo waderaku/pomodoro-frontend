@@ -64,3 +64,14 @@ export type TimerViewModel = {
   changeMiniWindow: () => void;
   changeFullWindow: () => void;
 };
+
+export type TaskConfigModel = {
+  taskId: TaskId;
+  isModalOpen: boolean;
+};
+
+export type TaskConfigViewModel = {
+  taskConfig: TaskConfigModel;
+  handleOpen: (taskId: TaskId) => void;
+  handleClose: () => void;
+};

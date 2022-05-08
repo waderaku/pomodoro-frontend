@@ -14,32 +14,38 @@ import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import AccessTimeIcon from "@mui/icons-material/AccountCircle";
+import { useTaskConfig, useTaskViewModel } from "domain/hooks/taskViewModel";
+
+const style = {
+  position: "absolute" as "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: "80%",
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+};
 
 // テスト用に一旦propsでtasksを与える。これはuseTaskで置き換わる想定
-const TaskConfig = (props: {
-  taskId: TaskId;
-  closeModal: () => void;
-  taskViewModel: TaskViewModel;
-}) => {
-  // 下記3行:本番用コード
-  // const { name, estimatedWorkload, deadline, notes, updateTask } = useTask(
-  //   props.taskId
-  // );
+const TaskConfig = () => {
+  const { taskConfig, handleClose } = useTaskConfig();
+  const { task, updateTask } = useTaskViewModel(taskConfig.taskId);
 
-  // 下記1行:テスト用コード
-  const updateTask = props.taskViewModel.updateTask;
-  const { name, estimatedWorkload, deadline, notes } = props.taskViewModel.task;
+  const [nameState, setNameState] = useState(task.name);
+  const [estimatedWorkloadState, setEstimatedWorkloadState] = useState(
+    task.estimatedWorkload
+  );
+  const [deadlineState, setDeadlineState] = useState(task.deadline);
+  const [notesState, setNotesState] = useState(task.notes);
 
-  const [nameState, setNameState] = useState(name);
-  const [estimatedWorkloadState, setEstimatedWorkloadState] =
-    useState(estimatedWorkload);
-  const [deadlineState, setDeadlineState] = useState(deadline);
-  const [notesState, setNotesState] = useState(notes);
   const handleUpdateTask = () => {
     updateTask(nameState, estimatedWorkloadState, deadlineState, notesState);
   };
+
   return (
-    <Box m={1}>
+    <Box m={1} sx={style}>
       <Card variant="outlined">
         <CardContent>
           <Grid
@@ -142,7 +148,7 @@ const TaskConfig = (props: {
             justifyContent="space-evenly"
             alignItems="center"
           >
-            <Button size="small" onClick={props.closeModal}>
+            <Button size="small" onClick={handleClose}>
               close
             </Button>
             <Button size="small" onClick={handleUpdateTask}>

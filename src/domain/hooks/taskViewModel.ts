@@ -6,6 +6,7 @@ import {
   useRecoilValue,
   useRecoilRefresher_UNSTABLE,
   useRecoilValueLoadable,
+  useRecoilState,
 } from "recoil";
 import {
   TaskViewModel,
@@ -17,6 +18,8 @@ import {
   Notes,
   Deadline,
   ChildrenTaskCount,
+  TaskConfigModel,
+  TaskConfigViewModel,
 } from "../model";
 
 const taskState = selectorFamily<Task, TaskId>({
@@ -146,5 +149,28 @@ export const useTaskViewModel = (taskId: TaskId): TaskViewModel => {
     createTask,
     finishTask,
     updateTask,
+  };
+};
+
+export const taskConfigState = atom<TaskConfigModel>({
+  key: "taskConfig",
+  default: {
+    taskId: "",
+    isModalOpen: false,
+  },
+});
+
+export const useTaskConfig = (): TaskConfigViewModel => {
+  const [taskConfig, setTaskConfig] = useRecoilState(taskConfigState);
+  const handleOpen = (taskId: TaskId) => {
+    setTaskConfig({ taskId: taskId, isModalOpen: true });
+  };
+  const handleClose = () => {
+    setTaskConfig({ taskId: "", isModalOpen: true });
+  };
+  return {
+    taskConfig,
+    handleOpen,
+    handleClose,
   };
 };
