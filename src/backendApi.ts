@@ -11,7 +11,6 @@ import {
 } from "domain/model";
 
 const BACKEND_URI = process.env.REACT_APP_BACKEND_URL;
-const NOT_IMPLEMENTED_ERROR = new Error("Not Implemented");
 
 interface TaskData {
   name: TaskName;
@@ -65,7 +64,7 @@ export const fetchTaskAPI = async (userId: UserId) => {
     .then((res) => {
       const tupleArray = res.data.task.map(intoDomainTask);
       const taskPool: Map<TaskId, Task> = new Map();
-      tupleArray.map((tuple) => {
+      tupleArray.forEach((tuple) => {
         taskPool.set(tuple.id, tuple.task);
       });
       return taskPool;
@@ -85,7 +84,7 @@ export const updateTaskAPI = async (userId: UserId, task: Task) => {
   const headers = {
     headers: idHeader,
   };
-  const data = {
+  const taskData = {
     name: task.name,
     deadline: task.deadline,
     estimatedWorkload: task.estimatedWorkload,
@@ -93,7 +92,7 @@ export const updateTaskAPI = async (userId: UserId, task: Task) => {
     done: task.done,
   };
   return await axios
-    .put<null>(endpoint, data, headers)
+    .put<null>(endpoint, taskData, headers)
     .then((res) => res.data)
     .catch((err) => {
       throw new Error(
@@ -117,7 +116,7 @@ export const registerTaskAPI = async (
   const headers = {
     headers: idHeader,
   };
-  const data = {
+  const updateData = {
     parentId,
     name,
     estimatedWorkload,
@@ -125,7 +124,7 @@ export const registerTaskAPI = async (
     notes,
   };
   return await axios
-    .post<null>(endpoint, data, headers)
+    .post<null>(endpoint, updateData, headers)
     .then((res) => res.data)
     .catch((err) => {
       throw new Error(
