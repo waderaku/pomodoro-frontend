@@ -5,6 +5,7 @@ import ChildrenTaskList from "./ChildrenTaskList";
 import { useTaskViewModel } from "domain/hooks/taskViewModel";
 import { TaskId } from "domain/model";
 import Timer from "./Timer";
+import TaskConfig from "./TaskConfig";
 
 const TaskManager = (props: { taskId: TaskId }) => {
   const taskViewModel = useTaskViewModel(props.taskId);
@@ -12,6 +13,7 @@ const TaskManager = (props: { taskId: TaskId }) => {
   return (
     <Stack spacing={2}>
       <Timer />
+      <TaskConfig />
       <Card>
         <Typography variant="h2" align="center">
           {taskViewModel.task.name}

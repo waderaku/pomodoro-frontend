@@ -78,6 +78,7 @@ export const fetchTaskAPI = async (userId: UserId) => {
 
 export const updateTaskAPI = async (userId: UserId, task: Task) => {
   const endpoint = BACKEND_URI + "task/" + task.id;
+
   const idHeader = {
     userId: userId,
   };

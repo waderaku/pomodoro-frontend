@@ -1,5 +1,6 @@
 import { Timer } from "@mui/icons-material";
 import { Dayjs } from "dayjs";
+import { Dispatch, SetStateAction } from "react";
 
 export type UserId = string;
 export type TaskId = string;
@@ -70,8 +71,32 @@ export type TaskConfigModel = {
   isModalOpen: boolean;
 };
 
+export type UpdateTaskModel = {
+  name: TaskName;
+  estimatedWorkload: Minute;
+  deadline: Deadline;
+  notes: Notes;
+};
+
 export type TaskConfigViewModel = {
   taskConfig: TaskConfigModel;
+  updateTaskProps: UpdateTaskModel;
+  setupdateTaskProps: Dispatch<
+    SetStateAction<{
+      name: TaskName;
+      estimatedWorkload: Minute;
+      deadline: any;
+      notes: Notes;
+    }>
+  >;
   handleOpen: (taskId: TaskId) => void;
   handleClose: () => void;
+  handleUpdate: (
+    updateTask: (
+      taskName: TaskName,
+      estimatedWorkload: Minute,
+      deadline: Deadline,
+      notes: Notes
+    ) => void
+  ) => void;
 };

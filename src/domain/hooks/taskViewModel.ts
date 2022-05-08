@@ -1,4 +1,5 @@
 import { fetchTaskAPI, registerTaskAPI, updateTaskAPI } from "backendApi";
+import { useState } from "react";
 import {
   atom,
   selector,
@@ -160,17 +161,42 @@ export const taskConfigState = atom<TaskConfigModel>({
   },
 });
 
-export const useTaskConfig = (): TaskConfigViewModel => {
+export const useTaskConfigViewModel = (): TaskConfigViewModel => {
   const [taskConfig, setTaskConfig] = useRecoilState(taskConfigState);
+  const [updateTaskProps, setupdateTaskProps] = useState({
+    name: "",
+    estimatedWorkload: 0,
+    deadline: null,
+    notes: "",
+  });
   const handleOpen = (taskId: TaskId) => {
     setTaskConfig({ taskId: taskId, isModalOpen: true });
   };
   const handleClose = () => {
-    setTaskConfig({ taskId: "", isModalOpen: true });
+    setTaskConfig({ taskId: "", isModalOpen: false });
+  };
+  const handleUpdate = (
+    updateTask: (
+      taskName: TaskName,
+      estimatedWorkload: Minute,
+      deadline: Deadline,
+      notes: Notes
+    ) => void
+  ) => {
+    updateTask(
+      updateTaskProps.name,
+      updateTaskProps.estimatedWorkload,
+      updateTaskProps.deadline,
+      updateTaskProps.notes
+    );
+    handleClose();
   };
   return {
     taskConfig,
+    updateTaskProps,
+    setupdateTaskProps,
     handleOpen,
     handleClose,
+    handleUpdate,
   };
 };
