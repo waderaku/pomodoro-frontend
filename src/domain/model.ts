@@ -8,6 +8,7 @@ export type Minute = number;
 export type Second = number;
 export type Notes = string;
 export type Deadline = Dayjs | null;
+export type TimerWorking = "none" | "Full" | "Mini";
 
 export type Task = {
   id: TaskId;
@@ -42,22 +43,16 @@ export type TaskViewModel = {
   ) => void;
 };
 
-// export type Timer = {
-//   task: TaskViewModel;
-//   start: Dayjs;
-//   length: Minute;
-// };
 export type Timer = {
   taskId: TaskId;
   start: Dayjs;
   isTask: boolean;
   setTime: Second;
-  // remainTime: Second;
-  timerWorking: string;
+  timerWorking: TimerWorking;
 };
 
 export type TimerViewModel = {
-  timerState: Timer;
+  newTimer: Timer;
   seconds: Second;
   minutes: Minute;
   isRunning: boolean;

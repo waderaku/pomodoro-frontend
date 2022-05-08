@@ -4,7 +4,7 @@ import TaskCreator from "./TaskCreator";
 import ChildrenTaskList from "./ChildrenTaskList";
 import { useTaskViewModel } from "domain/hooks/taskViewModel";
 import { TaskId } from "domain/model";
-import Timer from "./Timer/Timer";
+import Timer from "./Timer";
 
 const TaskManager = (props: { taskId: TaskId }) => {
   const taskViewModel = useTaskViewModel(props.taskId);

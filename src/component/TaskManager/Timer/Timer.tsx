@@ -5,9 +5,9 @@ import FullwindowTimer from "./FullWindowTimer";
 import MiniTimer from "./MiniTimer";
 
 const Timer = () => {
-  const { timerState } = useTimerViewModel();
+  const { newTimer } = useTimerViewModel();
   const windowDimensions = useWindowDimensions();
-  if (timerState.timerWorking === "Full") {
+  if (newTimer.timerWorking === "Full") {
     return (
       <div
         style={{
@@ -23,7 +23,7 @@ const Timer = () => {
       </div>
     );
   }
-  if (timerState.timerWorking === "Mini") {
+  if (newTimer.timerWorking === "Mini") {
     return (
       <div
         style={{
@@ -48,7 +48,7 @@ const Timer = () => {
       </div>
     );
   }
-  return <div />;
+  return null;
 };
 
 export default Timer;

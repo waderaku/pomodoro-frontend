@@ -115,7 +115,7 @@ export const useTimerViewModel = (): TimerViewModel => {
   };
 
   return {
-    timerState: timer,
+    newTimer: timer,
     seconds,
     minutes,
     isRunning,

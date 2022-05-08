@@ -9,7 +9,7 @@ import { useTaskViewModel } from "domain/hooks/taskViewModel";
 
 const FullwindowTimer = () => {
   const {
-    timerState,
+    newTimer,
     seconds,
     minutes,
     isRunning,
@@ -19,8 +19,8 @@ const FullwindowTimer = () => {
     setTime,
     changeMiniWindow,
   } = useTimerViewModel();
-  const { task } = useTaskViewModel(timerState.taskId);
-  const color = timerState.isTask ? "#FF8A80" : "#82B1FF";
+  const { task } = useTaskViewModel(newTimer.taskId);
+  const color = newTimer.isTask ? "#FF8A80" : "#82B1FF";
 
   const Buttons: FC = () => {
     if (isRunning) {
@@ -57,7 +57,7 @@ const FullwindowTimer = () => {
               size="large"
               onClick={() => {
                 // TODO ユーザー設定から1clockの時間取得
-                const resetTime = setTime(timerState.isTask ? 25 * 60 : 5 * 60);
+                const resetTime = setTime(newTimer.isTask ? 25 * 60 : 5 * 60);
                 restart(resetTime, false);
               }}
             >
@@ -97,7 +97,7 @@ const FullwindowTimer = () => {
         <Grid item>
           <Box m={1} mt={8}>
             <Typography variant="h3">
-              {timerState.isTask ? "TaskTime" : "Break time"}
+              {newTimer.isTask ? "TaskTime" : "Break time"}
             </Typography>
           </Box>
         </Grid>
@@ -121,9 +121,9 @@ const FullwindowTimer = () => {
         alignItems="center"
       >
         <Grid item>
-          <div style={{ fontSize: "100px" }}>
-            <span>{minutes}</span>:<span>{seconds}</span>
-          </div>
+          <Typography variant="inherit" style={{ fontSize: "100px" }}>
+            {minutes}:{seconds}
+          </Typography>
         </Grid>
       </Grid>
       <Grid

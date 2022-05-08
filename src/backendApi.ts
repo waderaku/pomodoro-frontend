@@ -145,13 +145,13 @@ export const registerEventAPI = async (
   const headers = {
     headers: idHeader,
   };
-  const data = {
+  const eventData = {
     taskId,
     start,
     end,
   };
   return await axios
-    .post<null>(endpoint, data, headers)
+    .post<null>(endpoint, eventData, headers)
     .then((res) => res.data)
     .catch((err) => {
       throw new Error(

@@ -1,4 +1,4 @@
-import { Card, Box, Grid, IconButton } from "@mui/material";
+import { Card, Box, Grid, IconButton, Typography } from "@mui/material";
 import PlayCircleFilledWhiteIcon from "@mui/icons-material/PlayCircleFilledWhite";
 import PauseCircleIcon from "@mui/icons-material/PauseCircle";
 import StopCircleIcon from "@mui/icons-material/StopCircle";
@@ -8,7 +8,7 @@ import { useTimerViewModel } from "domain/hooks/timerViewModels";
 
 const MiniTimer = () => {
   const {
-    timerState,
+    newTimer,
     seconds,
     minutes,
     isRunning,
@@ -18,7 +18,7 @@ const MiniTimer = () => {
     setTime,
     changeFullWindow,
   } = useTimerViewModel();
-  const color = timerState.isTask ? "#FF8A80" : "#82B1FF";
+  const color = newTimer.isTask ? "#FF8A80" : "#82B1FF";
 
   const Buttons: FC = () => {
     if (isRunning) {
@@ -57,7 +57,7 @@ const MiniTimer = () => {
               size="large"
               onClick={() => {
                 // TODO ユーザー設定から1clockの時間取得
-                const resetTime = setTime(timerState.isTask ? 25 * 60 : 5 * 60);
+                const resetTime = setTime(newTimer.isTask ? 25 * 60 : 5 * 60);
                 restart(resetTime, false);
               }}
             >
@@ -90,9 +90,9 @@ const MiniTimer = () => {
         </Grid>
         <Grid item xs={5}>
           <Box ml={2}>
-            <div style={{ fontSize: "medium" }}>
-              <span>{minutes}</span>:<span>{seconds}</span>
-            </div>
+            <Typography variant="inherit" style={{ fontSize: "medium" }}>
+              {minutes}:{seconds}
+            </Typography>
           </Box>
         </Grid>
         <Grid item xs={5}>
