@@ -4,11 +4,14 @@ import TaskCreator from "./TaskCreator";
 import ChildrenTaskList from "./ChildrenTaskList";
 import { useTaskViewModel } from "domain/hooks/taskViewModel";
 import { TaskId } from "domain/model";
+import Timer from "./Timer";
 
 const TaskManager = (props: { taskId: TaskId }) => {
   const taskViewModel = useTaskViewModel(props.taskId);
+
   return (
     <Stack spacing={2}>
+      <Timer />
       <Card>
         <Typography variant="h2" align="center">
           {taskViewModel.task.name}

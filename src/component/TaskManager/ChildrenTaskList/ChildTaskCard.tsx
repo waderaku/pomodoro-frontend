@@ -3,8 +3,10 @@ import PlayCircleIcon from "@mui/icons-material/PlayCircle";
 import DoneOutlineIcon from "@mui/icons-material/DoneOutline";
 import { TaskId } from "domain/model";
 import { useTaskViewModel } from "domain/hooks/taskViewModel";
+import { useTimerViewModel } from "domain/hooks/timerViewModels";
 const ChildTaskCard = (props: { taskId: TaskId }) => {
   const taskViewModel = useTaskViewModel(props.taskId);
+  const { startTask } = useTimerViewModel();
 
   return (
     <Paper
@@ -22,7 +24,12 @@ const ChildTaskCard = (props: { taskId: TaskId }) => {
           <Grid container alignItems="center" justifyContent="center">
             <Grid item xs={4}>
               <ListItemButton>
-                <PlayCircleIcon color="primary" />
+                <PlayCircleIcon
+                  color="primary"
+                  onClick={() => {
+                    startTask(props.taskId);
+                  }}
+                />
               </ListItemButton>
             </Grid>
             <Grid item xs={4}>
