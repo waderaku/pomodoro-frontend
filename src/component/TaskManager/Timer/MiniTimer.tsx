@@ -1,33 +1,24 @@
-import { Card, Box, Grid, IconButton } from "@mui/material";
+import { Card, Box, Grid, IconButton, Typography } from "@mui/material";
 import PlayCircleFilledWhiteIcon from "@mui/icons-material/PlayCircleFilledWhite";
 import PauseCircleIcon from "@mui/icons-material/PauseCircle";
 import StopCircleIcon from "@mui/icons-material/StopCircle";
 import BrandingWatermarkIcon from "@mui/icons-material/BrandingWatermark";
-import { useTimer } from "react-timer-hook";
 import { FC } from "react";
-import { Second } from "domain/model";
+import { useTimerViewModel } from "domain/hooks/timerViewModels";
 
-const MiniTimer = (props: {
-  expiryTime: Second;
-  isTask: boolean;
-  openWindow: (time: Second) => void;
-}) => {
-  const { expiryTime } = props;
-  const color = props.isTask ? "#FF8A80" : "#82B1FF";
-
-  const setTime = (time: Second): Date => {
-    const expiryTimestamp = new Date();
-    expiryTimestamp.setSeconds(expiryTimestamp.getSeconds() + time);
-    return expiryTimestamp;
-  };
-
-  const expiryTimestamp = setTime(expiryTime);
-
-  const { seconds, minutes, isRunning, start, pause, restart } = useTimer({
-    expiryTimestamp,
-    onExpire: () => console.warn("onExpire called"),
-    autoStart: true,
-  });
+const MiniTimer = () => {
+  const {
+    newTimer,
+    seconds,
+    minutes,
+    isRunning,
+    start,
+    pause,
+    restart,
+    setTime,
+    changeFullWindow,
+  } = useTimerViewModel();
+  const color = newTimer.isTask ? "#FF8A80" : "#82B1FF";
 
   const Buttons: FC = () => {
     if (isRunning) {
@@ -65,7 +56,8 @@ const MiniTimer = (props: {
               color="primary"
               size="large"
               onClick={() => {
-                const resetTime = setTime(expiryTime);
+                // TODO ユーザー設定から1clockの時間取得
+                const resetTime = setTime(newTimer.isTask ? 25 * 60 : 5 * 60);
                 restart(resetTime, false);
               }}
             >
@@ -90,7 +82,7 @@ const MiniTimer = (props: {
             color="primary"
             size="large"
             onClick={() => {
-              props.openWindow(minutes * 60 + seconds);
+              changeFullWindow();
             }}
           >
             <BrandingWatermarkIcon fontSize="medium" />
@@ -98,9 +90,9 @@ const MiniTimer = (props: {
         </Grid>
         <Grid item xs={5}>
           <Box ml={2}>
-            <div style={{ fontSize: "medium" }}>
-              <span>{minutes}</span>:<span>{seconds}</span>
-            </div>
+            <Typography variant="inherit" style={{ fontSize: "medium" }}>
+              {minutes}:{seconds}
+            </Typography>
           </Box>
         </Grid>
         <Grid item xs={5}>

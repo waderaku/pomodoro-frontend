@@ -1,4 +1,6 @@
+import { Timer } from "@mui/icons-material";
 import { Dayjs } from "dayjs";
+import { ChangeEvent, Dispatch, SetStateAction } from "react";
 
 export type UserId = string;
 export type TaskId = string;
@@ -7,6 +9,7 @@ export type Minute = number;
 export type Second = number;
 export type Notes = string;
 export type Deadline = Dayjs | null;
+export type TimerWorking = "none" | "Full" | "Mini";
 
 export type Task = {
   id: TaskId;
@@ -42,7 +45,66 @@ export type TaskViewModel = {
 };
 
 export type Timer = {
-  task: TaskViewModel;
+  taskId: TaskId;
   start: Dayjs;
-  length: Minute;
+  isTask: boolean;
+  setTime: Second;
+  timerWorking: TimerWorking;
+};
+
+export type TimerViewModel = {
+  newTimer: Timer;
+  seconds: Second;
+  minutes: Minute;
+  isRunning: boolean;
+  start: () => void;
+  pause: () => void;
+  restart: (newExpiryTimestamp: Date, autoStart?: boolean | undefined) => void;
+  setTime: (time: Second) => Date;
+  startTask: (taskId: TaskId) => void;
+  changeMiniWindow: () => void;
+  changeFullWindow: () => void;
+};
+
+export type TaskConfigModel = TaskId | null;
+
+export type UpdateTaskModel = {
+  name: TaskName;
+  estimatedWorkload: Minute;
+  deadline: Deadline;
+  notes: Notes;
+};
+
+export type TaskConfigViewModel = {
+  taskConfig: TaskConfigModel;
+  isModalOpen: boolean;
+  updateTaskProps: UpdateTaskModel;
+  setupdateTaskProps: Dispatch<
+    SetStateAction<{
+      name: TaskName;
+      estimatedWorkload: Minute;
+      deadline: any;
+      notes: Notes;
+    }>
+  >;
+  handleOpen: (taskId: TaskId) => void;
+  handleClose: () => void;
+  handleUpdate: (
+    updateTask: (
+      taskName: TaskName,
+      estimatedWorkload: Minute,
+      deadline: Deadline,
+      notes: Notes
+    ) => void
+  ) => void;
+  handleUpdateName: (
+    e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+  ) => void;
+  handleUpdateEstimatedWorkload: (
+    e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+  ) => void;
+  handleUpdateDeadline: (e: any) => void;
+  handleUpdateNotes: (
+    e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+  ) => void;
 };

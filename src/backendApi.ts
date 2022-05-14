@@ -78,6 +78,7 @@ export const fetchTaskAPI = async (userId: UserId) => {
 
 export const updateTaskAPI = async (userId: UserId, task: Task) => {
   const endpoint = BACKEND_URI + "task/" + task.id;
+
   const idHeader = {
     userId: userId,
   };
@@ -125,6 +126,33 @@ export const registerTaskAPI = async (
   };
   return await axios
     .post<null>(endpoint, updateData, headers)
+    .then((res) => res.data)
+    .catch((err) => {
+      throw new Error(
+        `Unexpected API Response from ${endpoint}.\nError: ${err}`
+      );
+    });
+};
+export const registerEventAPI = async (
+  userId: UserId,
+  taskId: TaskId,
+  start: Date,
+  end: Date
+) => {
+  const endpoint = BACKEND_URI + "event";
+  const idHeader = {
+    userId: userId,
+  };
+  const headers = {
+    headers: idHeader,
+  };
+  const eventData = {
+    taskId,
+    start,
+    end,
+  };
+  return await axios
+    .post<null>(endpoint, eventData, headers)
     .then((res) => res.data)
     .catch((err) => {
       throw new Error(

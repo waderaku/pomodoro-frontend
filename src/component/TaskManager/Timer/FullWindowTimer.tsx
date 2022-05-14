@@ -3,39 +3,24 @@ import PlayCircleFilledWhiteIcon from "@mui/icons-material/PlayCircleFilledWhite
 import PauseCircleIcon from "@mui/icons-material/PauseCircle";
 import BrandingWatermarkIcon from "@mui/icons-material/BrandingWatermark";
 import StopCircleIcon from "@mui/icons-material/StopCircle";
-import { useTimer } from "react-timer-hook";
 import { FC } from "react";
-import { Second, Task } from "domain/model";
+import { useTimerViewModel } from "domain/hooks/timerViewModels";
+import { useTaskViewModel } from "domain/hooks/taskViewModel";
 
-const FullwindowTimer = (props: {
-  expiryTime: Second;
-  isTask: boolean;
-  task: Task;
-  closeWindow: (time: Second) => void;
-}) => {
-  // 下記3行:本番用コード
-  // const { name } = useTask(
-  //   props.taskId
-  // );
-
-  // 下記1行:テスト用コード
-  const { name } = props.task;
-  const { expiryTime } = props;
-  const color = props.isTask ? "#FF8A80" : "#82B1FF";
-
-  const setTime = (time: Second): Date => {
-    const expiryTimestamp = new Date();
-    expiryTimestamp.setSeconds(expiryTimestamp.getSeconds() + time);
-    return expiryTimestamp;
-  };
-
-  const expiryTimestamp = setTime(expiryTime);
-
-  const { seconds, minutes, isRunning, start, pause, restart } = useTimer({
-    expiryTimestamp,
-    onExpire: () => console.warn("onExpire called"),
-    autoStart: true,
-  });
+const FullwindowTimer = () => {
+  const {
+    newTimer,
+    seconds,
+    minutes,
+    isRunning,
+    start,
+    pause,
+    restart,
+    setTime,
+    changeMiniWindow,
+  } = useTimerViewModel();
+  const { task } = useTaskViewModel(newTimer.taskId);
+  const color = newTimer.isTask ? "#FF8A80" : "#82B1FF";
 
   const Buttons: FC = () => {
     if (isRunning) {
@@ -71,7 +56,8 @@ const FullwindowTimer = (props: {
               color="primary"
               size="large"
               onClick={() => {
-                const resetTime = setTime(expiryTime);
+                // TODO ユーザー設定から1clockの時間取得
+                const resetTime = setTime(newTimer.isTask ? 25 * 60 : 5 * 60);
                 restart(resetTime, false);
               }}
             >
@@ -95,7 +81,7 @@ const FullwindowTimer = (props: {
             color="primary"
             size="large"
             onClick={() => {
-              props.closeWindow(minutes * 60 + seconds);
+              changeMiniWindow();
             }}
           >
             <BrandingWatermarkIcon fontSize="small" />
@@ -111,7 +97,7 @@ const FullwindowTimer = (props: {
         <Grid item>
           <Box m={1} mt={8}>
             <Typography variant="h3">
-              {props.isTask ? "TaskTime" : "Break time"}
+              {newTimer.isTask ? "TaskTime" : "Break time"}
             </Typography>
           </Box>
         </Grid>
@@ -124,7 +110,7 @@ const FullwindowTimer = (props: {
       >
         <Grid item>
           <Box m={1}>
-            <Typography variant="body1">{name}</Typography>
+            <Typography variant="body1">{task.name}</Typography>
           </Box>
         </Grid>
       </Grid>
@@ -135,9 +121,9 @@ const FullwindowTimer = (props: {
         alignItems="center"
       >
         <Grid item>
-          <div style={{ fontSize: "100px" }}>
-            <span>{minutes}</span>:<span>{seconds}</span>
-          </div>
+          <Typography variant="inherit" style={{ fontSize: "100px" }}>
+            {minutes}:{seconds}
+          </Typography>
         </Grid>
       </Grid>
       <Grid
