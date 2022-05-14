@@ -42,6 +42,7 @@ export type TaskViewModel = {
     deadline: Deadline,
     notes: Notes
   ) => void;
+  toManager: () => void;
 };
 
 export type Timer = {

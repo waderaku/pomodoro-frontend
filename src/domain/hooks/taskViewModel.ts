@@ -165,22 +165,20 @@ export const useTaskViewModel = (taskId: TaskId): TaskViewModel => {
     updateTaskAPI(userId, newTask);
     refresh();
   };
+  const setSelectedTaskId = useSetRecoilState(selectedTaskIdState);
+  const toManager = () => setSelectedTaskId(task.id);
 
   return {
     task,
     createTask,
     finishTask,
     updateTask,
+    toManager,
   };
 };
 
 export const useRootTaskArray = () => {
   return useRecoilValue(rootTaskArrayState);
-};
-
-export const useToManager = () => {
-  const setSelectedTaskId = useSetRecoilState(selectedTaskIdState);
-  return (taskId: TaskId) => setSelectedTaskId(taskId);
 };
 
 const taskConfigState = atom<TaskConfigModel>({
