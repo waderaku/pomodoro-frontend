@@ -23,7 +23,34 @@ import {
   ChildrenTaskCount,
   TaskConfigModel,
   TaskConfigViewModel,
+  TaskResponse,
 } from "../model";
+
+const taskResponseState = selector<TaskResponse>({
+  key: "taskResponse",
+  get: async ({ get }) => {
+    const userId = get(userIdState);
+    if (!userId) {
+      throw Error("User is not yet logged in");
+    }
+    const taskResponse = await fetchTaskAPI(userId);
+    return taskResponse;
+  },
+});
+
+const taskPoolState = selector<Map<TaskId, Task>>({
+  key: "taskPool",
+  get: ({ get }) => {
+    return get(taskResponseState).taskPool;
+  },
+});
+
+const rootTaskArrayState = selector<TaskId[]>({
+  key: "rootTaskArray",
+  get: ({ get }) => {
+    return get(taskResponseState).rootTaskArray;
+  },
+});
 
 const taskState = selectorFamily<Task, TaskId>({
   key: "task",
@@ -75,18 +102,6 @@ export const useSelectedTaskId = (): TaskId => {
 
 export const userIdState = atom<UserId>({
   key: "userId",
-});
-
-export const taskPoolState = selector<Map<TaskId, Task>>({
-  key: "taskPool",
-  get: async ({ get }) => {
-    const userId = get(userIdState);
-    if (!userId) {
-      throw Error("User is not yet logged in");
-    }
-    const taskPool = await fetchTaskAPI(userId);
-    return taskPool;
-  },
 });
 
 export const useIsTaskLoaded = () => {
@@ -157,6 +172,10 @@ export const useTaskViewModel = (taskId: TaskId): TaskViewModel => {
     finishTask,
     updateTask,
   };
+};
+
+export const useRootTaskArray = () => {
+  return useRecoilValue(rootTaskArrayState);
 };
 
 export const useToManager = () => {
@@ -245,8 +264,4 @@ export const useTaskConfigViewModel = (): TaskConfigViewModel => {
     handleUpdateDeadline,
     handleUpdateNotes,
   };
-};
-
-export const useRootTaskArray = () => {
-  return ["task1", "task2"];
 };

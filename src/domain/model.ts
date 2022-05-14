@@ -108,3 +108,8 @@ export type TaskConfigViewModel = {
     e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
   ) => void;
 };
+
+export type TaskResponse = {
+  taskPool: Map<TaskId, Task>;
+  rootTaskArray: TaskId[];
+};
