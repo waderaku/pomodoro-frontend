@@ -1,4 +1,6 @@
 import { fetchTaskAPI, registerTaskAPI, updateTaskAPI } from "backendApi";
+import dayjs from "dayjs";
+import { ChangeEvent, useState } from "react";
 import {
   atom,
   selector,
@@ -6,6 +8,7 @@ import {
   useRecoilValue,
   useRecoilRefresher_UNSTABLE,
   useRecoilValueLoadable,
+  useRecoilState,
 } from "recoil";
 import {
   TaskViewModel,
@@ -17,6 +20,8 @@ import {
   Notes,
   Deadline,
   ChildrenTaskCount,
+  TaskConfigModel,
+  TaskConfigViewModel,
 } from "../model";
 
 const taskState = selectorFamily<Task, TaskId>({
@@ -146,5 +151,88 @@ export const useTaskViewModel = (taskId: TaskId): TaskViewModel => {
     createTask,
     finishTask,
     updateTask,
+  };
+};
+
+const taskConfigState = atom<TaskConfigModel>({
+  key: "taskConfig",
+  default: null,
+});
+
+export const useTaskConfigViewModel = (): TaskConfigViewModel => {
+  const [taskConfig, setTaskConfig] = useRecoilState(taskConfigState);
+  const isModalOpen = taskConfig ? true : false;
+  const [updateTaskProps, setupdateTaskProps] = useState({
+    name: "",
+    estimatedWorkload: 0,
+    deadline: dayjs(),
+    notes: "",
+  });
+  const handleOpen = (taskId: TaskId) => {
+    setTaskConfig(taskId);
+  };
+  const handleClose = () => {
+    setTaskConfig(null);
+  };
+  const handleUpdate = (
+    updateTask: (
+      taskName: TaskName,
+      estimatedWorkload: Minute,
+      deadline: Deadline,
+      notes: Notes
+    ) => void
+  ) => {
+    updateTask(
+      updateTaskProps.name,
+      updateTaskProps.estimatedWorkload,
+      updateTaskProps.deadline,
+      updateTaskProps.notes
+    );
+    handleClose();
+  };
+  const handleUpdateName = (
+    e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+  ) => {
+    setupdateTaskProps({
+      ...updateTaskProps,
+      name: e.target.value,
+    });
+  };
+  const handleUpdateEstimatedWorkload = (
+    e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+  ) => {
+    setupdateTaskProps({
+      ...updateTaskProps,
+      estimatedWorkload: Number(e.target.value),
+    });
+  };
+  const handleUpdateDeadline = (e: Deadline) => {
+    if (e) {
+      setupdateTaskProps({
+        ...updateTaskProps,
+        deadline: e,
+      });
+    }
+  };
+  const handleUpdateNotes = (
+    e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+  ) => {
+    setupdateTaskProps({
+      ...updateTaskProps,
+      notes: e.target.value,
+    });
+  };
+  return {
+    taskConfig,
+    isModalOpen,
+    updateTaskProps,
+    setupdateTaskProps,
+    handleOpen,
+    handleClose,
+    handleUpdate,
+    handleUpdateName,
+    handleUpdateEstimatedWorkload,
+    handleUpdateDeadline,
+    handleUpdateNotes,
   };
 };

@@ -1,5 +1,6 @@
 import { Timer } from "@mui/icons-material";
 import { Dayjs } from "dayjs";
+import { ChangeEvent, Dispatch, SetStateAction } from "react";
 
 export type UserId = string;
 export type TaskId = string;
@@ -63,4 +64,47 @@ export type TimerViewModel = {
   startTask: (taskId: TaskId) => void;
   changeMiniWindow: () => void;
   changeFullWindow: () => void;
+};
+
+export type TaskConfigModel = TaskId | null;
+
+export type UpdateTaskModel = {
+  name: TaskName;
+  estimatedWorkload: Minute;
+  deadline: Deadline;
+  notes: Notes;
+};
+
+export type TaskConfigViewModel = {
+  taskConfig: TaskConfigModel;
+  isModalOpen: boolean;
+  updateTaskProps: UpdateTaskModel;
+  setupdateTaskProps: Dispatch<
+    SetStateAction<{
+      name: TaskName;
+      estimatedWorkload: Minute;
+      deadline: any;
+      notes: Notes;
+    }>
+  >;
+  handleOpen: (taskId: TaskId) => void;
+  handleClose: () => void;
+  handleUpdate: (
+    updateTask: (
+      taskName: TaskName,
+      estimatedWorkload: Minute,
+      deadline: Deadline,
+      notes: Notes
+    ) => void
+  ) => void;
+  handleUpdateName: (
+    e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+  ) => void;
+  handleUpdateEstimatedWorkload: (
+    e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+  ) => void;
+  handleUpdateDeadline: (e: any) => void;
+  handleUpdateNotes: (
+    e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+  ) => void;
 };
