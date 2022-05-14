@@ -18,6 +18,7 @@ import {
   useTaskConfigViewModel,
   useTaskViewModel,
 } from "domain/hooks/taskViewModel";
+import { TaskId } from "domain/model";
 
 const style = {
   position: "absolute" as "absolute",
@@ -28,15 +29,19 @@ const style = {
   bgcolor: "background.paper",
 };
 
-const TaskConfig = () => {
+const TaskConfig = (props: { taskId: TaskId }) => {
   const {
-    taskConfig,
+    isModalOpen,
     updateTaskProps,
     setupdateTaskProps,
     handleClose,
     handleUpdate,
+    handleUpdateName,
+    handleUpdateEstimatedWorkload,
+    handleUpdateDeadline,
+    handleUpdateNotes,
   } = useTaskConfigViewModel();
-  const { task, updateTask } = useTaskViewModel(taskConfig.taskId);
+  const { task, updateTask } = useTaskViewModel(props.taskId);
   useEffect(() => {
     setupdateTaskProps({
       name: task.name,
@@ -48,10 +53,10 @@ const TaskConfig = () => {
 
   return (
     <Modal
-      open={taskConfig.isModalOpen}
+      open={isModalOpen}
       onClose={handleClose}
-      aria-labelledby="modal-modal-title"
-      aria-describedby="modal-modal-description"
+      aria-labelledby="taskConfig"
+      aria-describedby="taskConfig"
     >
       <Box m={1} sx={style}>
         <Card variant="outlined">
@@ -68,12 +73,7 @@ const TaskConfig = () => {
                     fullWidth
                     id="name"
                     label="Task Name"
-                    onChange={(e) =>
-                      setupdateTaskProps({
-                        ...updateTaskProps,
-                        name: e.target.value,
-                      })
-                    }
+                    onChange={(e) => handleUpdateName(e)}
                     defaultValue={updateTaskProps.name}
                     variant="standard"
                   />
@@ -91,14 +91,9 @@ const TaskConfig = () => {
                   <TextField
                     fullWidth
                     id="estimatedWorkload"
-                    label="pomodor Num"
+                    label="Estimated Workload Num"
                     type="number"
-                    onChange={(e) =>
-                      setupdateTaskProps({
-                        ...updateTaskProps,
-                        estimatedWorkload: Number(e.target.value),
-                      })
-                    }
+                    onChange={(e) => handleUpdateEstimatedWorkload(e)}
                     defaultValue={updateTaskProps.estimatedWorkload}
                     InputProps={{
                       startAdornment: (
@@ -125,14 +120,7 @@ const TaskConfig = () => {
                       label="deadline"
                       inputFormat="yyyy/MM/dd"
                       value={updateTaskProps.deadline}
-                      onChange={(e) => {
-                        if (e) {
-                          setupdateTaskProps({
-                            ...updateTaskProps,
-                            deadline: e,
-                          });
-                        }
-                      }}
+                      onChange={(e) => handleUpdateDeadline(e)}
                       renderInput={(params) => <TextField {...params} />}
                     />
                   </LocalizationProvider>
@@ -154,12 +142,7 @@ const TaskConfig = () => {
                     multiline
                     rows={4}
                     defaultValue={updateTaskProps.notes}
-                    onChange={(e) =>
-                      setupdateTaskProps({
-                        ...updateTaskProps,
-                        notes: e.target.value,
-                      })
-                    }
+                    onChange={(e) => handleUpdateNotes(e)}
                   />
                 </Box>
               </Grid>

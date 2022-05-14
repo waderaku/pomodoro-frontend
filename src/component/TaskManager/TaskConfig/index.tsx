@@ -3,8 +3,8 @@ import TaskConfig from "./TaskConfig";
 
 const TaskConfigModal = () => {
   const { taskConfig } = useTaskConfigViewModel();
-  if (taskConfig.isModalOpen) {
-    return <TaskConfig />;
+  if (taskConfig) {
+    return <TaskConfig taskId={taskConfig} />;
   } else {
     return null;
   }

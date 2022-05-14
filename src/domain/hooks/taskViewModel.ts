@@ -1,5 +1,6 @@
 import { fetchTaskAPI, registerTaskAPI, updateTaskAPI } from "backendApi";
-import { useState } from "react";
+import dayjs from "dayjs";
+import { ChangeEvent, useState } from "react";
 import {
   atom,
   selector,
@@ -153,27 +154,25 @@ export const useTaskViewModel = (taskId: TaskId): TaskViewModel => {
   };
 };
 
-export const taskConfigState = atom<TaskConfigModel>({
+const taskConfigState = atom<TaskConfigModel>({
   key: "taskConfig",
-  default: {
-    taskId: "",
-    isModalOpen: false,
-  },
+  default: null,
 });
 
 export const useTaskConfigViewModel = (): TaskConfigViewModel => {
   const [taskConfig, setTaskConfig] = useRecoilState(taskConfigState);
+  const isModalOpen = taskConfig ? true : false;
   const [updateTaskProps, setupdateTaskProps] = useState({
     name: "",
     estimatedWorkload: 0,
-    deadline: null,
+    deadline: dayjs(),
     notes: "",
   });
   const handleOpen = (taskId: TaskId) => {
-    setTaskConfig({ taskId: taskId, isModalOpen: true });
+    setTaskConfig(taskId);
   };
   const handleClose = () => {
-    setTaskConfig({ taskId: "", isModalOpen: false });
+    setTaskConfig(null);
   };
   const handleUpdate = (
     updateTask: (
@@ -191,12 +190,49 @@ export const useTaskConfigViewModel = (): TaskConfigViewModel => {
     );
     handleClose();
   };
+  const handleUpdateName = (
+    e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+  ) => {
+    setupdateTaskProps({
+      ...updateTaskProps,
+      name: e.target.value,
+    });
+  };
+  const handleUpdateEstimatedWorkload = (
+    e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+  ) => {
+    setupdateTaskProps({
+      ...updateTaskProps,
+      estimatedWorkload: Number(e.target.value),
+    });
+  };
+  const handleUpdateDeadline = (e: Deadline) => {
+    if (e) {
+      setupdateTaskProps({
+        ...updateTaskProps,
+        deadline: e,
+      });
+    }
+  };
+  const handleUpdateNotes = (
+    e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+  ) => {
+    setupdateTaskProps({
+      ...updateTaskProps,
+      notes: e.target.value,
+    });
+  };
   return {
     taskConfig,
+    isModalOpen,
     updateTaskProps,
     setupdateTaskProps,
     handleOpen,
     handleClose,
     handleUpdate,
+    handleUpdateName,
+    handleUpdateEstimatedWorkload,
+    handleUpdateDeadline,
+    handleUpdateNotes,
   };
 };
