@@ -246,3 +246,7 @@ export const useTaskConfigViewModel = (): TaskConfigViewModel => {
     handleUpdateNotes,
   };
 };
+
+export const useRootTaskArray = () => {
+  return ["task1", "task2"];
+};
