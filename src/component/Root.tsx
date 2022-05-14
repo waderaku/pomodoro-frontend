@@ -3,25 +3,31 @@ import TaskManager from "./TaskManager";
 import ToolNavi from "./ToolNavi";
 import SideNavi from "./SideNavi";
 import {
+  selectedTaskIdState,
   useIsTaskLoaded,
   userIdState,
-  useSelectedTaskId,
 } from "domain/hooks/taskViewModel";
 import { useEffect } from "react";
 import { Typography } from "@mui/material";
 
 const Root = () => {
-  const taskId = useSelectedTaskId();
+  // テスト用
   const testUserId = "testUser";
   const setUserId = useSetRecoilState(userIdState);
-  useEffect(() => setUserId(testUserId), []);
+  const defaultSelectedTaskId = "task1";
+  const setSelectedTaskId = useSetRecoilState(selectedTaskIdState);
+  useEffect(() => {
+    setUserId(testUserId);
+    setSelectedTaskId(defaultSelectedTaskId);
+  }, []);
+
   const loaded = useIsTaskLoaded();
   if (loaded) {
     return (
       <div>
         <ToolNavi />
         <SideNavi />
-        <TaskManager taskId={taskId} />
+        <TaskManager />
       </div>
     );
   } else {
