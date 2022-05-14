@@ -9,7 +9,6 @@ import {
   useToManager,
 } from "domain/hooks/taskViewModel";
 import { useTimerViewModel } from "domain/hooks/timerViewModels";
-import {} from "domain/hooks/taskViewModel";
 
 const ChildTaskCard = (props: { taskId: TaskId }) => {
   const taskViewModel = useTaskViewModel(props.taskId);
