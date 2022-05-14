@@ -1,21 +1,14 @@
-import { Drawer, List } from "@mui/material";
+import { Box, List } from "@mui/material";
 import { useRootTaskArray } from "domain/hooks/taskViewModel";
 import { TaskId } from "domain/model";
 import RootTaskCard from "./RootTaskCard";
 
-const drawerWidth = 240;
 const SideNavi = () => {
   const rootTaskArray = useRootTaskArray();
   return (
-    <Drawer
-      variant="permanent"
-      anchor="left"
+    <Box
       sx={{
-        width: drawerWidth,
-        "& .MuiDrawer-paper": {
-          width: drawerWidth,
-          boxSizing: "border-box",
-        },
+        height: "100vh",
       }}
     >
       <List>
@@ -23,7 +16,7 @@ const SideNavi = () => {
           return <RootTaskCard taskId={taskId} />;
         })}
       </List>
-    </Drawer>
+    </Box>
   );
 };
 export default SideNavi;
