@@ -6,6 +6,7 @@ import StopCircleIcon from "@mui/icons-material/StopCircle";
 import { FC } from "react";
 import { useTimerViewModel } from "domain/hooks/timerViewModels";
 import { useTaskViewModel } from "domain/hooks/taskViewModel";
+import { useWindowDimensions } from "domain/hooks/windowDemention";
 
 const FullwindowTimer = () => {
   const {
@@ -20,6 +21,7 @@ const FullwindowTimer = () => {
     changeMiniWindow,
   } = useTimerViewModel();
   const { task } = useTaskViewModel(newTimer.taskId);
+  const windowDimensions = useWindowDimensions();
   const color = newTimer.isTask ? "#FF8A80" : "#82B1FF";
 
   const Buttons: FC = () => {
@@ -69,7 +71,13 @@ const FullwindowTimer = () => {
     }
   };
   return (
-    <Card style={{ backgroundColor: color }}>
+    <Card
+      style={{
+        backgroundColor: color,
+        width: windowDimensions.width,
+        height: windowDimensions.height,
+      }}
+    >
       <Grid
         container
         direction="row"

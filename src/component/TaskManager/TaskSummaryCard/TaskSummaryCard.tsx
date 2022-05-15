@@ -7,10 +7,10 @@ import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
 import { Minute, Task } from "domain/model";
 import { useFinishedChildrenTaskCount } from "domain/hooks/taskViewModel";
 
-const EstimatedWorkloadIcon = () => <AccessTimeIcon fontSize="large" />;
-const FinishedWorkloadIcon = () => <TimelapseIcon fontSize="large" />;
-const RemainTaskIcon = () => <AssignmentIcon fontSize="large" />;
-const FinishedTaskIcon = () => <AssignmentTurnedInIcon fontSize="large" />;
+const EstimatedWorkloadIcon = () => <AccessTimeIcon fontSize="medium" />;
+const FinishedWorkloadIcon = () => <TimelapseIcon fontSize="medium" />;
+const RemainTaskIcon = () => <AssignmentIcon fontSize="medium" />;
+const FinishedTaskIcon = () => <AssignmentTurnedInIcon fontSize="medium" />;
 
 const minuteToHourMinute = (time: Minute) => {
   const hour = Math.floor(time / 60);
@@ -32,28 +32,36 @@ const TaskSummaryCard = (props: { task: Task }) => {
   const { finishedTaskCount, unfinishedTaskCount } =
     useFinishedChildrenTaskCount(props.task.id);
   return (
-    <Grid container justifyContent="space-between">
+    <Grid
+      container
+      justifyContent="space-around
+    "
+    >
       <Grid item xs={2.5}>
         <IconTextCard
           Icon={EstimatedWorkloadIcon}
+          title={"EstimatedTime"}
           text={exprMinute(props.task.estimatedWorkload)}
         />
       </Grid>
       <Grid item xs={2.5}>
         <IconTextCard
           Icon={FinishedWorkloadIcon}
+          title={"FinishedTime"}
           text={exprMinute(props.task.finishedWorkload)}
         />
       </Grid>
       <Grid item xs={2.5}>
         <IconTextCard
           Icon={RemainTaskIcon}
+          title={"RemainTask"}
           text={unfinishedTaskCount.toString()}
         />
       </Grid>
       <Grid item xs={2.5}>
         <IconTextCard
           Icon={FinishedTaskIcon}
+          title={"FinishedTask"}
           text={finishedTaskCount.toString()}
         />
       </Grid>

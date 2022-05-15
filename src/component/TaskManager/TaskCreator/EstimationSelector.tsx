@@ -1,8 +1,15 @@
-import { Grid, Autocomplete, TextField, Typography } from "@mui/material";
+import {
+  Grid,
+  Autocomplete,
+  TextField,
+  Typography,
+  styled,
+  Box,
+} from "@mui/material";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import { useState } from "react";
 
-let options: Array<number | null> = Array.from(Array(15).keys());
+let options: Array<number | null> = Array.from(Array(100).keys());
 options.push(null);
 
 const EstimationSelector = (props: {
@@ -30,22 +37,53 @@ const EstimationSelector = (props: {
   } else {
     numClockDisplay = (
       <Grid container alignItems="center" justifyContent="center">
-        <Grid item xs={2}>
-          <AccessTimeIcon color="primary" fontSize="large" />
+        <Grid item>
+          <Box sx={{ pr: 1 }}>
+            <AccessTimeIcon color="primary" fontSize="large" />
+          </Box>
         </Grid>
-        <Grid item xs={1}>
-          <Typography variant="h4">{props.numClock}</Typography>
+        <Grid item>
+          <Box sx={{ pl: 1 }}>
+            <Typography variant="h4">{props.numClock}</Typography>
+          </Box>
         </Grid>
       </Grid>
     );
   }
+  const myStyle = {
+    "& .MuiAutocomplete-inputRoot": {
+      paddingLeft: "0!important",
+      paddingRight: "0!important",
+    },
+    "& .MuiAutocomplete-clearIndicator": {
+      display: "none",
+    },
+    "& .MuiAutocomplete-input": {
+      display: "none",
+    },
+    "& .MuiInput-underline:after": {
+      borderBottomColor: "transparent",
+    },
+    "& .MuiOutlinedInput-root": {
+      "& fieldset": {
+        borderColor: "transparent",
+      },
+      "&:hover fieldset": {
+        borderColor: "transparent",
+      },
+      "&.Mui-focused fieldset": {
+        borderColor: "transparent",
+      },
+    },
+  };
+  const MyTextField = styled(TextField)(myStyle);
 
   return (
     <Grid container alignItems="center" justifyContent="space-between">
-      <Grid item xs={9}>
+      <Grid item xs={11}>
         {numClockDisplay}
       </Grid>
-      <Grid item xs={3}>
+      <Grid item xs={1}>
         <Autocomplete
           value={props.numClock}
           getOptionLabel={(option) => (option ? option.toString() : "")}
@@ -58,7 +96,7 @@ const EstimationSelector = (props: {
           onInputChange={(_, newInputValue) => {
             setInputValue(newInputValue);
           }}
-          renderInput={(params) => <TextField {...params} label="Clock数" />}
+          renderInput={(params) => <MyTextField {...params} />}
           options={options}
         />
       </Grid>
