@@ -12,8 +12,8 @@ const SideNavi = () => {
       }}
     >
       <List>
-        {rootTaskArray.map((taskId: TaskId) => {
-          return <RootTaskCard taskId={taskId} />;
+        {rootTaskArray.map((taskId: TaskId, key: number) => {
+          return <RootTaskCard taskId={taskId} key={key} />;
         })}
       </List>
     </Box>
