@@ -10,26 +10,24 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { myDatePickerStyle, myInputStyle } from "styles/inputStyles";
 import dayjs from "dayjs";
 
+const MyTextField = styled(TextField)(myInputStyle);
+const MyDatePicker = styled(TextField)(myDatePickerStyle);
+
 const TaskCreator = (props: { taskId: TaskId }) => {
   const taskViewModel = useTaskViewModel(props.taskId);
   const createTask = taskViewModel.createTask;
   const [numClock, setNumClock] = useState(0);
   const [deadlineDate, setDeadlineDate] = useState<Date>(new Date());
-  const taskNameRef = useRef<HTMLInputElement>(null);
+  const [taskName, setTaskName] = useState("");
   const onKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.key === "Enter") {
-      const element = e.target as HTMLInputElement;
-      const taskName = element.value;
       createTask(taskName, numClock * 25, dayjs(deadlineDate), "");
     }
   };
   const onClick = () => {
-    const taskName = taskNameRef.current?.value ?? "";
     createTask(taskName, numClock * 25, dayjs(deadlineDate), "");
   };
 
-  const MyTextField = styled(TextField)(myInputStyle);
-  const MyDatePicker = styled(TextField)(myDatePickerStyle);
   return (
     <Paper>
       <Grid
@@ -56,7 +54,8 @@ const TaskCreator = (props: { taskId: TaskId }) => {
               <MyTextField
                 fullWidth
                 id="taskName"
-                ref={taskNameRef}
+                value={taskName}
+                onChange={(event) => setTaskName(event.target.value)}
                 label="please input task name"
               />
             </Grid>
@@ -71,9 +70,7 @@ const TaskCreator = (props: { taskId: TaskId }) => {
               label="Basic example"
               value={deadlineDate}
               onChange={(newValue) => {
-                if (newValue) {
-                  setDeadlineDate(newValue);
-                }
+                newValue && setDeadlineDate(newValue);
               }}
               renderInput={(params) => <MyDatePicker {...params} />}
             />
