@@ -13,6 +13,8 @@ import { mySelectInputStyle } from "styles/inputStyles";
 let options: Array<number | null> = Array.from(Array(100).keys());
 options.push(null);
 
+const MySelectField = styled(TextField)(mySelectInputStyle);
+
 const EstimationSelector = (props: {
   numClock: number;
   setNumClock: (numClock: number) => void;
@@ -51,8 +53,6 @@ const EstimationSelector = (props: {
       </Grid>
     );
   }
-
-  const MySelectField = styled(TextField)(mySelectInputStyle);
 
   return (
     <Grid container alignItems="center" justifyContent="space-between">
