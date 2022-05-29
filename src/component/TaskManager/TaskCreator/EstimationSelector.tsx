@@ -8,6 +8,7 @@ import {
 } from "@mui/material";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import { useState } from "react";
+import { mySelectInputStyle } from "styles/inputStyles";
 
 let options: Array<number | null> = Array.from(Array(100).keys());
 options.push(null);
@@ -50,33 +51,8 @@ const EstimationSelector = (props: {
       </Grid>
     );
   }
-  const myStyle = {
-    "& .MuiAutocomplete-inputRoot": {
-      paddingLeft: "0!important",
-      paddingRight: "0!important",
-    },
-    "& .MuiAutocomplete-clearIndicator": {
-      display: "none",
-    },
-    "& .MuiAutocomplete-input": {
-      display: "none",
-    },
-    "& .MuiInput-underline:after": {
-      borderBottomColor: "transparent",
-    },
-    "& .MuiOutlinedInput-root": {
-      "& fieldset": {
-        borderColor: "transparent",
-      },
-      "&:hover fieldset": {
-        borderColor: "transparent",
-      },
-      "&.Mui-focused fieldset": {
-        borderColor: "transparent",
-      },
-    },
-  };
-  const MyTextField = styled(TextField)(myStyle);
+
+  const MySelectField = styled(TextField)(mySelectInputStyle);
 
   return (
     <Grid container alignItems="center" justifyContent="space-between">
@@ -96,7 +72,7 @@ const EstimationSelector = (props: {
           onInputChange={(_, newInputValue) => {
             setInputValue(newInputValue);
           }}
-          renderInput={(params) => <MyTextField {...params} />}
+          renderInput={(params) => <MySelectField {...params} />}
           options={options}
         />
       </Grid>

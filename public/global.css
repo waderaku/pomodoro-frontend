@@ -140,3 +140,6 @@ table {
 .MuiPaper-root:focus-within {
   border: thick #32a1ce;
 }
+.css-j5h6pi-MuiPopper-root {
+  left: -0.5rem !important;
+}

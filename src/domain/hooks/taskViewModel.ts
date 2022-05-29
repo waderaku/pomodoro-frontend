@@ -104,6 +104,9 @@ export const useTaskViewModel = (taskId: TaskId): TaskViewModel => {
     deadline: Deadline,
     notes: Notes
   ) => {
+    console.log(
+      taskName + ":" + estimatedWorkload + ":" + deadline + ":" + notes
+    );
     registerTaskAPI(
       userId,
       task.id,
