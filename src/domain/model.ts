@@ -8,7 +8,7 @@ export type TaskName = string;
 export type Minute = number;
 export type Second = number;
 export type Notes = string;
-export type Deadline = Dayjs | null;
+export type Deadline = Dayjs;
 export type TimerWorking = "none" | "Full" | "Mini";
 
 export type Task = {

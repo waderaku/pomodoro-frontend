@@ -2,7 +2,7 @@ import { TextField, Grid, Paper, styled, IconButton } from "@mui/material";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import EstimationSelector from "./EstimationSelector";
 import { useRef, useState } from "react";
-import { TaskId } from "domain/model";
+import { Deadline, TaskId } from "domain/model";
 import { useTaskViewModel } from "domain/hooks/taskViewModel";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -17,15 +17,15 @@ const TaskCreator = (props: { taskId: TaskId }) => {
   const taskViewModel = useTaskViewModel(props.taskId);
   const createTask = taskViewModel.createTask;
   const [numClock, setNumClock] = useState(0);
-  const [deadlineDate, setDeadlineDate] = useState<Date>(new Date());
+  const [deadlineDate, setDeadlineDate] = useState<Deadline>(dayjs());
   const [taskName, setTaskName] = useState("");
   const onKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.key === "Enter") {
-      createTask(taskName, numClock * 25, dayjs(deadlineDate), "");
+      createTask(taskName, numClock * 25, deadlineDate, "");
     }
   };
   const onClick = () => {
-    createTask(taskName, numClock * 25, dayjs(deadlineDate), "");
+    createTask(taskName, numClock * 25, deadlineDate, "");
   };
 
   return (
