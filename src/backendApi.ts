@@ -68,7 +68,10 @@ export const fetchTaskAPI = async (userId: UserId) => {
       tupleArray.forEach((tuple) => {
         taskPool.set(tuple.id, tuple.task);
       });
-      return taskPool;
+      return {
+        taskPool: taskPool,
+        rootTaskArray: res.data.rootTaskId,
+      };
     })
     .catch((err) => {
       throw new Error(

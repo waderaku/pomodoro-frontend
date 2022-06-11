@@ -8,7 +8,7 @@ import {
   userIdState,
 } from "domain/hooks/taskViewModel";
 import { useEffect } from "react";
-import { Typography } from "@mui/material";
+import { Grid, Toolbar, Typography } from "@mui/material";
 
 const Root = () => {
   // テスト用
@@ -19,6 +19,7 @@ const Root = () => {
   useEffect(() => {
     setUserId(testUserId);
     setSelectedTaskId(defaultSelectedTaskId);
+    // eslint-disable-next-line
   }, []);
 
   const loaded = useIsTaskLoaded();
@@ -26,8 +27,15 @@ const Root = () => {
     return (
       <div>
         <ToolNavi />
-        <SideNavi />
-        <TaskManager />
+        <Toolbar />
+        <Grid container>
+          <Grid item xs={2}>
+            <SideNavi />
+          </Grid>
+          <Grid item xs={10}>
+            <TaskManager />
+          </Grid>
+        </Grid>
       </div>
     );
   } else {

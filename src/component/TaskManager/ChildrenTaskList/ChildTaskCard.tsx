@@ -12,14 +12,11 @@ import { TaskId } from "domain/model";
 import {
   useTaskConfigViewModel,
   useTaskViewModel,
-  useToManager,
 } from "domain/hooks/taskViewModel";
 import { useTimerViewModel } from "domain/hooks/timerViewModels";
-import {} from "domain/hooks/taskViewModel";
 
 const ChildTaskCard = (props: { taskId: TaskId }) => {
   const taskViewModel = useTaskViewModel(props.taskId);
-  const toManager = useToManager();
   const { startTask } = useTimerViewModel();
   const { handleOpen } = useTaskConfigViewModel();
 
@@ -30,12 +27,9 @@ const ChildTaskCard = (props: { taskId: TaskId }) => {
       }}
     >
       <Grid container alignItems="center" justifyContent="space-between">
-        <Grid item xs={9.5}>
+        <Grid item xs={9.5} onClick={taskViewModel.toManager}>
           <ListItemButton>
-            <ListItemText
-              primary={taskViewModel.task.name}
-              onClick={() => toManager(props.taskId)}
-            ></ListItemText>
+            <ListItemText primary={taskViewModel.task.name}></ListItemText>
           </ListItemButton>
         </Grid>
         <Grid item xs={2.5}>
