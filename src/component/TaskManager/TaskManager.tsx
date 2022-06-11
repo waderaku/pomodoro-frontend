@@ -21,7 +21,7 @@ const TaskManager = () => {
         <MainTaskCard taskName={taskViewModel.task.name} />
         <TaskSummaryCard task={taskViewModel.task} />
         <TaskCreator taskId={taskId} />
-        <Divider style={{ fontSize: "8px", color: "#9e9e9e" }}>
+        <Divider sx={{ fontSize: "8px", color: "#9e9e9e" }}>
           Child Tasks
         </Divider>
         <ChildrenTaskList childrenIdList={taskViewModel.task.childrenIdList} />

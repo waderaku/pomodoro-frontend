@@ -14,9 +14,13 @@ const MainTaskCard = (props: { taskName: string }) => {
         </Grid>
         <Grid item>
           <Box sx={{ p: 1 }}>
-            <span style={{ fontSize: "8px", color: "#9e9e9e" }}>
+            <Typography
+              variant="body2"
+              component="span"
+              sx={{ fontSize: "8px", color: "#9e9e9e" }}
+            >
               Selected Task Name
-            </span>
+            </Typography>
           </Box>
         </Grid>
       </Grid>

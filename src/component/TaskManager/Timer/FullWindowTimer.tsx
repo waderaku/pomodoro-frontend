@@ -72,7 +72,7 @@ const FullwindowTimer = () => {
   };
   return (
     <Card
-      style={{
+      sx={{
         backgroundColor: color,
         width: windowDimensions.width,
         height: windowDimensions.height,
@@ -129,7 +129,7 @@ const FullwindowTimer = () => {
         alignItems="center"
       >
         <Grid item>
-          <Typography variant="inherit" style={{ fontSize: "100px" }}>
+          <Typography variant="inherit" sx={{ fontSize: "100px" }}>
             {minutes}:{seconds}
           </Typography>
         </Grid>

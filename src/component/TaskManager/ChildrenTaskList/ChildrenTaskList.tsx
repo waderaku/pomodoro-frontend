@@ -4,9 +4,9 @@ import ChildTaskCard from "./ChildTaskCard";
 
 const ChildrenTaskList = (props: { childrenIdList: TaskId[] }) => {
   return (
-    <List style={{ paddingTop: "0" }}>
+    <List sx={{ paddingTop: "0" }}>
       {props.childrenIdList.map((taskId, key) => (
-        <ListItem key={key} style={{ paddingLeft: 0, paddingRight: 0 }}>
+        <ListItem key={key} sx={{ paddingLeft: 0, paddingRight: 0 }}>
           <ChildTaskCard taskId={taskId} />
         </ListItem>
       ))}

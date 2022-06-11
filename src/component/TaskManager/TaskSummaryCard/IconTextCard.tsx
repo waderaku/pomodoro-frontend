@@ -16,9 +16,13 @@ const IconTextCard = (props: { Icon: FC; title: string; text: string }) => {
         </Grid>
         <Grid item>
           <Box sx={{ pl: 1, pt: 1, pb: 1 }}>
-            <span style={{ fontSize: "8px", color: "#9e9e9e" }}>
+            <Typography
+              variant="body2"
+              component="span"
+              sx={{ fontSize: "8px", color: "#9e9e9e" }}
+            >
               {props.title}
-            </span>
+            </Typography>
           </Box>
         </Grid>
       </Grid>

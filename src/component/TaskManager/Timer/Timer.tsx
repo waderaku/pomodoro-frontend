@@ -1,4 +1,4 @@
-import { Grid } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import { useTimerViewModel } from "domain/hooks/timerViewModels";
 import FullwindowTimer from "./FullWindowTimer";
 import MiniTimer from "./MiniTimer";
@@ -10,22 +10,22 @@ const Timer = () => {
 
   if (newTimer.timerWorking === "Full") {
     return (
-      <div
-        style={{
+      <Box
+        sx={{
           position: "absolute",
           top: 0,
           left: 0,
-          zIndex: 2,
+          zIndex: 1101,
         }}
       >
         <FullwindowTimer />
-      </div>
+      </Box>
     );
   }
   if (newTimer.timerWorking === "Mini") {
     return (
-      <div
-        style={{
+      <Box
+        sx={{
           position: "absolute",
           top: "80%",
           left: "50%",
@@ -44,7 +44,7 @@ const Timer = () => {
             <MiniTimer />
           </Grid>
         </Grid>
-      </div>
+      </Box>
     );
   }
   return null;

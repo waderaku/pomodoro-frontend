@@ -69,7 +69,7 @@ const MiniTimer = () => {
     }
   };
   return (
-    <Card style={{ backgroundColor: color }}>
+    <Card sx={{ backgroundColor: color }}>
       <Grid
         container
         direction="row"
@@ -90,7 +90,7 @@ const MiniTimer = () => {
         </Grid>
         <Grid item xs={5}>
           <Box ml={2}>
-            <Typography variant="inherit" style={{ fontSize: "medium" }}>
+            <Typography variant="inherit" sx={{ fontSize: "medium" }}>
               {minutes}:{seconds}
             </Typography>
           </Box>
