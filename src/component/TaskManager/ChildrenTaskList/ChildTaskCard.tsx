@@ -53,7 +53,7 @@ const ChildTaskCard = (props: { taskId: TaskId }) => {
             <Grid item xs={4}>
               <IconButton
                 color="primary"
-                onClick={() => taskViewModel.finishTask}
+                onClick={() => taskViewModel.finishTask()}
               >
                 <DoneOutlineIcon />
               </IconButton>
