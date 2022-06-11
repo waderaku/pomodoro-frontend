@@ -1,10 +1,8 @@
-import { Grid, Typography, Paper, Box, Divider } from "@mui/material";
-import { FC } from "react";
-
-const IconTextCard = (props: { Icon: FC; title: string; text: string }) => {
-  const Icon = props.Icon;
+import { Box, Card, Divider, Grid, Typography } from "@mui/material";
+import TaskAltIcon from "@mui/icons-material/TaskAlt";
+const MainTaskCard = (props: { taskName: string }) => {
   return (
-    <Paper>
+    <Card>
       <Grid
         container
         direction="row"
@@ -12,16 +10,16 @@ const IconTextCard = (props: { Icon: FC; title: string; text: string }) => {
         alignItems="center"
       >
         <Grid item>
-          <Icon />
+          <TaskAltIcon fontSize="medium" />
         </Grid>
         <Grid item>
-          <Box sx={{ pl: 1, pt: 1, pb: 1 }}>
+          <Box sx={{ p: 1 }}>
             <Typography
               variant="body2"
               component="span"
               sx={{ fontSize: "8px", color: "#9e9e9e" }}
             >
-              {props.title}
+              Selected Task Name
             </Typography>
           </Box>
         </Grid>
@@ -32,18 +30,16 @@ const IconTextCard = (props: { Icon: FC; title: string; text: string }) => {
         direction="row"
         justifyContent="center"
         alignItems="center"
-        columns={12}
       >
         <Grid item>
           <Box sx={{ p: 1 }}>
-            <Typography variant={"h5"} align="center">
-              {props.text}
+            <Typography variant="h2" align="center">
+              {props.taskName}
             </Typography>
           </Box>
         </Grid>
       </Grid>
-    </Paper>
+    </Card>
   );
 };
-
-export default IconTextCard;
+export default MainTaskCard;

@@ -1,4 +1,10 @@
-import { ListItemButton, ListItemText, Grid, Paper } from "@mui/material";
+import {
+  ListItemButton,
+  ListItemText,
+  Grid,
+  Paper,
+  IconButton,
+} from "@mui/material";
 import PlayCircleIcon from "@mui/icons-material/PlayCircle";
 import DoneOutlineIcon from "@mui/icons-material/DoneOutline";
 import SettingsIcon from "@mui/icons-material/Settings";
@@ -28,30 +34,29 @@ const ChildTaskCard = (props: { taskId: TaskId }) => {
         </Grid>
         <Grid item xs={2.5}>
           <Grid container alignItems="center" justifyContent="center">
-            <Grid item xs={3}>
-              <ListItemButton>
-                <PlayCircleIcon
-                  color="primary"
-                  onClick={() => {
-                    startTask(props.taskId);
-                  }}
-                />
-              </ListItemButton>
+            <Grid item xs={4}>
+              <IconButton
+                color="primary"
+                onClick={() => startTask(props.taskId)}
+              >
+                <PlayCircleIcon />
+              </IconButton>
             </Grid>
-            <Grid item xs={3}>
-              <ListItemButton>
-                <SettingsIcon
-                  color="primary"
-                  onClick={() => {
-                    handleOpen(props.taskId);
-                  }}
-                />
-              </ListItemButton>
+            <Grid item xs={4}>
+              <IconButton
+                color="primary"
+                onClick={() => handleOpen(props.taskId)}
+              >
+                <SettingsIcon />
+              </IconButton>
             </Grid>
-            <Grid item xs={3}>
-              <ListItemButton>
-                <DoneOutlineIcon color="primary" />
-              </ListItemButton>
+            <Grid item xs={4}>
+              <IconButton
+                color="primary"
+                onClick={() => taskViewModel.finishTask}
+              >
+                <DoneOutlineIcon />
+              </IconButton>
             </Grid>
           </Grid>
         </Grid>

@@ -1,3 +1,4 @@
+import { CatchingPokemonSharp } from "@mui/icons-material";
 import axios from "axios";
 import dayjs from "dayjs";
 import {
@@ -90,7 +91,7 @@ export const updateTaskAPI = async (userId: UserId, task: Task) => {
   };
   const taskData = {
     name: task.name,
-    deadline: task.deadline,
+    deadline: task.deadline.toDate(),
     estimatedWorkload: task.estimatedWorkload,
     notes: task.notes,
     done: task.done,
@@ -124,7 +125,7 @@ export const registerTaskAPI = async (
     parentId,
     name,
     estimatedWorkload,
-    deadline,
+    deadline: deadline.toDate(),
     notes,
   };
   return await axios

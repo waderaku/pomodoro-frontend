@@ -1,36 +1,35 @@
-import { Grid } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import { useTimerViewModel } from "domain/hooks/timerViewModels";
-import { useWindowDimensions } from "domain/hooks/windowDemention";
 import FullwindowTimer from "./FullWindowTimer";
 import MiniTimer from "./MiniTimer";
+import { useWindowDimensions } from "domain/hooks/windowDemention";
 
 const Timer = () => {
   const { newTimer } = useTimerViewModel();
   const windowDimensions = useWindowDimensions();
+
   if (newTimer.timerWorking === "Full") {
     return (
-      <div
-        style={{
+      <Box
+        sx={{
           position: "absolute",
           top: 0,
           left: 0,
-          width: windowDimensions.width,
-          height: windowDimensions.height,
-          zIndex: 2,
+          zIndex: 1101,
         }}
       >
         <FullwindowTimer />
-      </div>
+      </Box>
     );
   }
   if (newTimer.timerWorking === "Mini") {
     return (
-      <div
-        style={{
+      <Box
+        sx={{
           position: "absolute",
           top: "80%",
           left: "50%",
-          width: windowDimensions.width,
+          width: (windowDimensions.width / 10) * 3,
           zIndex: 2,
         }}
       >
@@ -41,11 +40,11 @@ const Timer = () => {
           alignItems="center"
           columns={{ xs: 10 }}
         >
-          <Grid item xs={3}>
+          <Grid item xs={10}>
             <MiniTimer />
           </Grid>
         </Grid>
-      </div>
+      </Box>
     );
   }
   return null;

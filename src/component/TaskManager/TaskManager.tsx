@@ -1,4 +1,5 @@
-import { Typography, Stack, Card } from "@mui/material";
+import { Typography, Stack, Card, Box, Divider } from "@mui/material";
+import MainTaskCard from "./MainTaskCard";
 import TaskSummaryCard from "./TaskSummaryCard";
 import TaskCreator from "./TaskCreator";
 import ChildrenTaskList from "./ChildrenTaskList";
@@ -13,18 +14,19 @@ const TaskManager = () => {
   const taskViewModel = useTaskViewModel(taskId);
 
   return (
-    <Stack spacing={2}>
-      <Timer />
-      <TaskConfig />
-      <Card>
-        <Typography variant="h2" align="center">
-          {taskViewModel.task.name}
-        </Typography>
-      </Card>
-      <TaskSummaryCard task={taskViewModel.task} />
-      <TaskCreator taskId={taskId} />
-      <ChildrenTaskList childrenIdList={taskViewModel.task.childrenIdList} />
-    </Stack>
+    <Box sx={{ m: 1 }}>
+      <Stack spacing={2}>
+        <Timer />
+        <TaskConfig />
+        <MainTaskCard taskName={taskViewModel.task.name} />
+        <TaskSummaryCard task={taskViewModel.task} />
+        <TaskCreator taskId={taskId} />
+        <Divider sx={{ fontSize: "8px", color: "#9e9e9e" }}>
+          Child Tasks
+        </Divider>
+        <ChildrenTaskList childrenIdList={taskViewModel.task.childrenIdList} />
+      </Stack>
+    </Box>
   );
 };
 export default TaskManager;
