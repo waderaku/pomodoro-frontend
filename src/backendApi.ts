@@ -93,6 +93,7 @@ export const updateTaskAPI = async (userId: UserId, task: Task) => {
     notes: task.notes,
     done: task.done,
   };
+  console.log(taskData);
   return await axios
     .put<null>(endpoint, taskData, headers)
     .then((res) => res.data)

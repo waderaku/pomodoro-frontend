@@ -43,9 +43,7 @@ const ChildTaskCard = (props: { taskId: TaskId }) => {
             <Grid item xs={4}>
               <IconButton
                 color="primary"
-                onClick={() => {
-                  startTask(props.taskId);
-                }}
+                onClick={() => startTask(props.taskId)}
               >
                 <PlayCircleIcon />
               </IconButton>
@@ -53,15 +51,16 @@ const ChildTaskCard = (props: { taskId: TaskId }) => {
             <Grid item xs={4}>
               <IconButton
                 color="primary"
-                onClick={() => {
-                  handleOpen(props.taskId);
-                }}
+                onClick={() => handleOpen(props.taskId)}
               >
                 <SettingsIcon />
               </IconButton>
             </Grid>
             <Grid item xs={4}>
-              <IconButton color="primary">
+              <IconButton
+                color="primary"
+                onClick={() => taskViewModel.finishTask()}
+              >
                 <DoneOutlineIcon />
               </IconButton>
             </Grid>
