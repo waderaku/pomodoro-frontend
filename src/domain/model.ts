@@ -42,6 +42,7 @@ export type TaskViewModel = {
     deadline: Deadline,
     notes: Notes
   ) => void;
+  toManager: () => void;
 };
 
 export type Timer = {
@@ -107,4 +108,9 @@ export type TaskConfigViewModel = {
   handleUpdateNotes: (
     e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
   ) => void;
+};
+
+export type TaskResponse = {
+  taskPool: Map<TaskId, Task>;
+  rootTaskArray: TaskId[];
 };
