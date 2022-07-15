@@ -1,4 +1,3 @@
-import { Timer } from "@mui/icons-material";
 import { Dayjs } from "dayjs";
 import { ChangeEvent, Dispatch, SetStateAction } from "react";
 
@@ -9,6 +8,7 @@ export type Minute = number;
 export type Second = number;
 export type Notes = string;
 export type Deadline = Dayjs;
+export type ShortcutFlg = Boolean;
 export type TimerWorking = "none" | "Full" | "Mini";
 
 export type Task = {
@@ -33,7 +33,8 @@ export type TaskViewModel = {
     taskName: TaskName,
     estimatedWorkload: Minute,
     deadline: Deadline,
-    notes: Notes
+    notes: Notes,
+    shortcutFlg: ShortcutFlg
   ) => void;
   finishTask: () => void;
   updateTask: (

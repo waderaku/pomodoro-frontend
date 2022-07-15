@@ -5,25 +5,26 @@ import {
   atom,
   selector,
   selectorFamily,
-  useRecoilValue,
   useRecoilRefresher_UNSTABLE,
+  useRecoilState,
+  useRecoilValue,
   useRecoilValueLoadable,
   useSetRecoilState,
-  useRecoilState,
 } from "recoil";
 import {
-  TaskViewModel,
-  TaskId,
-  Task,
-  UserId,
-  TaskName,
+  ChildrenTaskCount,
+  Deadline,
   Minute,
   Notes,
-  Deadline,
-  ChildrenTaskCount,
+  ShortcutFlg,
+  Task,
   TaskConfigModel,
   TaskConfigViewModel,
+  TaskId,
+  TaskName,
   TaskResponse,
+  TaskViewModel,
+  UserId,
 } from "../model";
 
 const taskResponseState = selector<TaskResponse>({
@@ -117,7 +118,8 @@ export const useTaskViewModel = (taskId: TaskId): TaskViewModel => {
     taskName: TaskName,
     estimatedWorkload: Minute,
     deadline: Deadline,
-    notes: Notes
+    notes: Notes,
+    shortcutFlg: ShortcutFlg
   ) => {
     registerTaskAPI(
       userId,
@@ -125,7 +127,8 @@ export const useTaskViewModel = (taskId: TaskId): TaskViewModel => {
       taskName,
       estimatedWorkload,
       deadline,
-      notes
+      notes,
+      shortcutFlg
     )
       .then(() => {
         refresh();
