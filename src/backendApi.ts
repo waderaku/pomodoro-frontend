@@ -1,4 +1,3 @@
-import { CatchingPokemonSharp } from "@mui/icons-material";
 import axios from "axios";
 import dayjs from "dayjs";
 import {
@@ -12,6 +11,7 @@ import {
 } from "domain/model";
 
 const BACKEND_URI = process.env.REACT_APP_BACKEND_URL;
+const DATE_FORMAT = "YYYY-MM-DD";
 
 interface TaskData {
   name: TaskName;
@@ -45,6 +45,9 @@ const intoDomainTask = (apitask: APITask): TaskTuple => {
     ...taskData,
     id: taskId,
     deadline: dayjs(taskData.deadline),
+    // コンパイルエラーになるため一旦代入
+    // Get側で対応した時に削除
+    shortcutFlg: true,
   };
   return {
     id: taskId,
@@ -91,11 +94,13 @@ export const updateTaskAPI = async (userId: UserId, task: Task) => {
   };
   const taskData = {
     name: task.name,
-    deadline: task.deadline.toDate(),
+    deadline: task.deadline.format(DATE_FORMAT),
     estimatedWorkload: task.estimatedWorkload,
     notes: task.notes,
     done: task.done,
+    shortcutFlg: task.shortcutFlg,
   };
+  console.log(taskData);
   return await axios
     .put<null>(endpoint, taskData, headers)
     .then((res) => res.data)
