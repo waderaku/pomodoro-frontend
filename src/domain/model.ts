@@ -8,7 +8,7 @@ export type Minute = number;
 export type Second = number;
 export type Notes = string;
 export type Deadline = Dayjs;
-export type ShortcutFlg = Boolean;
+export type ShortcutFlg = boolean;
 export type TimerWorking = "none" | "Full" | "Mini";
 
 export type Task = {
@@ -20,6 +20,7 @@ export type Task = {
   estimatedWorkload: Minute;
   deadline: Deadline;
   notes: Notes;
+  shortcutFlg: boolean;
 };
 
 export type ChildrenTaskCount = {
@@ -41,7 +42,8 @@ export type TaskViewModel = {
     taskName: TaskName,
     estimatedWorkload: Minute,
     deadline: Deadline,
-    notes: Notes
+    notes: Notes,
+    shortcutFlg: ShortcutFlg
   ) => void;
   toManager: () => void;
 };
@@ -75,6 +77,7 @@ export type UpdateTaskModel = {
   estimatedWorkload: Minute;
   deadline: Deadline;
   notes: Notes;
+  shortcutFlg: ShortcutFlg;
 };
 
 export type TaskConfigViewModel = {
@@ -87,6 +90,7 @@ export type TaskConfigViewModel = {
       estimatedWorkload: Minute;
       deadline: any;
       notes: Notes;
+      shortcutFlg: ShortcutFlg;
     }>
   >;
   handleOpen: (taskId: TaskId) => void;
@@ -96,7 +100,8 @@ export type TaskConfigViewModel = {
       taskName: TaskName,
       estimatedWorkload: Minute,
       deadline: Deadline,
-      notes: Notes
+      notes: Notes,
+      shortcutFlg: ShortcutFlg
     ) => void
   ) => void;
   handleUpdateName: (
@@ -106,6 +111,7 @@ export type TaskConfigViewModel = {
     e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
   ) => void;
   handleUpdateDeadline: (e: any) => void;
+  handleUpdateShortcutFlg: (e: ChangeEvent<HTMLInputElement>) => void;
   handleUpdateNotes: (
     e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
   ) => void;

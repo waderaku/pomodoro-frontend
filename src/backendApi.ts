@@ -46,6 +46,9 @@ const intoDomainTask = (apitask: APITask): TaskTuple => {
     ...taskData,
     id: taskId,
     deadline: dayjs(taskData.deadline),
+    // コンパイルエラーになるため一旦代入
+    // Get側で対応した時に削除
+    shortcutFlg: true,
   };
   return {
     id: taskId,
@@ -92,10 +95,11 @@ export const updateTaskAPI = async (userId: UserId, task: Task) => {
   };
   const taskData = {
     name: task.name,
-    deadline: task.deadline.toDate(),
+    deadline: task.deadline.format(DATE_FORMAT),
     estimatedWorkload: task.estimatedWorkload,
     notes: task.notes,
     done: task.done,
+    shortcutFlg: task.shortcutFlg,
   };
   return await axios
     .put<null>(endpoint, taskData, headers)
