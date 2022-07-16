@@ -5,25 +5,26 @@ import {
   atom,
   selector,
   selectorFamily,
-  useRecoilValue,
   useRecoilRefresher_UNSTABLE,
+  useRecoilState,
+  useRecoilValue,
   useRecoilValueLoadable,
   useSetRecoilState,
-  useRecoilState,
 } from "recoil";
 import {
-  TaskViewModel,
-  TaskId,
-  Task,
-  UserId,
-  TaskName,
+  ChildrenTaskCount,
+  Deadline,
   Minute,
   Notes,
-  Deadline,
-  ChildrenTaskCount,
+  ShortcutFlg,
+  Task,
   TaskConfigModel,
   TaskConfigViewModel,
+  TaskId,
+  TaskName,
   TaskResponse,
+  TaskViewModel,
+  UserId,
 } from "../model";
 
 const taskResponseState = selector<TaskResponse>({
@@ -153,7 +154,8 @@ export const useTaskViewModel = (taskId: TaskId): TaskViewModel => {
     taskName: TaskName,
     estimatedWorkload: Minute,
     deadline: Deadline,
-    notes: Notes
+    notes: Notes,
+    shortcutFlg: ShortcutFlg
   ) => {
     const newTask = {
       ...task,
@@ -161,6 +163,7 @@ export const useTaskViewModel = (taskId: TaskId): TaskViewModel => {
       estimatedWorkload,
       deadline,
       notes,
+      shortcutFlg,
     };
     updateTaskAPI(userId, newTask);
     refresh();
@@ -194,6 +197,7 @@ export const useTaskConfigViewModel = (): TaskConfigViewModel => {
     estimatedWorkload: 0,
     deadline: dayjs(),
     notes: "",
+    shortcutFlg: false,
   });
   const handleOpen = (taskId: TaskId) => {
     setTaskConfig(taskId);
@@ -206,14 +210,16 @@ export const useTaskConfigViewModel = (): TaskConfigViewModel => {
       taskName: TaskName,
       estimatedWorkload: Minute,
       deadline: Deadline,
-      notes: Notes
+      notes: Notes,
+      shortcutFlg: ShortcutFlg
     ) => void
   ) => {
     updateTask(
       updateTaskProps.name,
       updateTaskProps.estimatedWorkload,
       updateTaskProps.deadline,
-      updateTaskProps.notes
+      updateTaskProps.notes,
+      updateTaskProps.shortcutFlg
     );
     handleClose();
   };
@@ -241,6 +247,12 @@ export const useTaskConfigViewModel = (): TaskConfigViewModel => {
       });
     }
   };
+  const handleUpdateShortcutFlg = (e: ChangeEvent<HTMLInputElement>) => {
+    setupdateTaskProps({
+      ...updateTaskProps,
+      shortcutFlg: e.target.checked,
+    });
+  };
   const handleUpdateNotes = (
     e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
   ) => {
@@ -260,6 +272,7 @@ export const useTaskConfigViewModel = (): TaskConfigViewModel => {
     handleUpdateName,
     handleUpdateEstimatedWorkload,
     handleUpdateDeadline,
+    handleUpdateShortcutFlg,
     handleUpdateNotes,
   };
 };
