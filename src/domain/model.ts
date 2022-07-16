@@ -34,7 +34,8 @@ export type TaskViewModel = {
     taskName: TaskName,
     estimatedWorkload: Minute,
     deadline: Deadline,
-    notes: Notes
+    notes: Notes,
+    shortcutFlg: ShortcutFlg
   ) => void;
   finishTask: () => void;
   updateTask: (

@@ -118,7 +118,8 @@ export const useTaskViewModel = (taskId: TaskId): TaskViewModel => {
     taskName: TaskName,
     estimatedWorkload: Minute,
     deadline: Deadline,
-    notes: Notes
+    notes: Notes,
+    shortcutFlg: ShortcutFlg
   ) => {
     registerTaskAPI(
       userId,
@@ -126,7 +127,8 @@ export const useTaskViewModel = (taskId: TaskId): TaskViewModel => {
       taskName,
       estimatedWorkload,
       deadline,
-      notes
+      notes,
+      shortcutFlg
     )
       .then(() => {
         refresh();

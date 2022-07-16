@@ -4,6 +4,7 @@ import {
   Deadline,
   Minute,
   Notes,
+  ShortcutFlg,
   Task,
   TaskId,
   TaskName,
@@ -116,7 +117,8 @@ export const registerTaskAPI = async (
   name: TaskName,
   estimatedWorkload: Minute,
   deadline: Deadline,
-  notes: Notes
+  notes: Notes,
+  shortcutFlg: ShortcutFlg
 ) => {
   const endpoint = BACKEND_URI + "task";
   const idHeader = {
@@ -125,15 +127,16 @@ export const registerTaskAPI = async (
   const headers = {
     headers: idHeader,
   };
-  const updateData = {
+  const registerData = {
     parentId,
     name,
     estimatedWorkload,
-    deadline: deadline.toDate(),
+    deadline: deadline.format(DATE_FORMAT),
     notes,
+    shortcutFlg,
   };
   return await axios
-    .post<null>(endpoint, updateData, headers)
+    .post<null>(endpoint, registerData, headers)
     .then((res) => res.data)
     .catch((err) => {
       throw new Error(
