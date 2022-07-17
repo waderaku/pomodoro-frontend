@@ -1,10 +1,10 @@
 import { Box, List } from "@mui/material";
-import { useRootTaskArray } from "domain/hooks/taskViewModel";
+import { useShortcutTaskArray } from "domain/hooks/taskViewModel";
 import { TaskId } from "domain/model";
 import RootTaskCard from "./RootTaskCard";
 
 const SideNavi = () => {
-  const rootTaskArray = useRootTaskArray();
+  const shortcutTaskArray = useShortcutTaskArray();
   return (
     <Box
       sx={{
@@ -12,7 +12,7 @@ const SideNavi = () => {
       }}
     >
       <List>
-        {rootTaskArray.map((taskId: TaskId, key: number) => {
+        {shortcutTaskArray.map((taskId: TaskId, key: number) => {
           return <RootTaskCard taskId={taskId} key={key} />;
         })}
       </List>

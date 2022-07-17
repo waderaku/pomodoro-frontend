@@ -46,10 +46,10 @@ const taskPoolState = selector<Map<TaskId, Task>>({
   },
 });
 
-const rootTaskArrayState = selector<TaskId[]>({
-  key: "rootTaskArray",
+const shortcutTaskArrayState = selector<TaskId[]>({
+  key: "shortcutTaskArray",
   get: ({ get }) => {
-    return get(taskResponseState).rootTaskArray;
+    return get(taskResponseState).shortcutTaskArray;
   },
 });
 
@@ -182,8 +182,8 @@ export const useTaskViewModel = (taskId: TaskId): TaskViewModel => {
   };
 };
 
-export const useRootTaskArray = () => {
-  return useRecoilValue(rootTaskArrayState);
+export const useShortcutTaskArray = () => {
+  return useRecoilValue(shortcutTaskArrayState);
 };
 
 const taskConfigState = atom<TaskConfigModel>({

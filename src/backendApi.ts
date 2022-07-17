@@ -31,12 +31,22 @@ interface APITask {
 
 interface TaskTuple {
   id: TaskId;
-  task: Task;
+  task: {
+    //shortcutFlg無し
+    id: TaskId;
+    name: TaskName;
+    childrenIdList: TaskId[];
+    done: boolean;
+    finishedWorkload: Minute;
+    estimatedWorkload: Minute;
+    deadline: Deadline;
+    notes: Notes;
+  };
 }
 
 interface FetchTaskResponse {
   task: APITask[];
-  rootTaskId: TaskId[];
+  shortcutTaskId: TaskId[];
 }
 
 const intoDomainTask = (apitask: APITask): TaskTuple => {
@@ -46,9 +56,6 @@ const intoDomainTask = (apitask: APITask): TaskTuple => {
     ...taskData,
     id: taskId,
     deadline: dayjs(taskData.deadline),
-    // コンパイルエラーになるため一旦代入
-    // Get側で対応した時に削除
-    shortcutFlg: true,
   };
   return {
     id: taskId,
@@ -70,11 +77,15 @@ export const fetchTaskAPI = async (userId: UserId) => {
       const tupleArray = res.data.task.map(intoDomainTask);
       const taskPool: Map<TaskId, Task> = new Map();
       tupleArray.forEach((tuple) => {
-        taskPool.set(tuple.id, tuple.task);
+        const task = {
+          ...tuple.task,
+          shortcutFlg: res.data.shortcutTaskId.includes(tuple.id),
+        };
+        taskPool.set(tuple.id, task);
       });
       return {
         taskPool: taskPool,
-        rootTaskArray: res.data.rootTaskId,
+        shortcutTaskArray: res.data.shortcutTaskId,
       };
     })
     .catch((err) => {
