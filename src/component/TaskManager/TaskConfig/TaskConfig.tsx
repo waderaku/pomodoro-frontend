@@ -1,24 +1,26 @@
-import { useEffect } from "react";
+import AccessTimeIcon from "@mui/icons-material/AccountCircle";
 import {
   Box,
-  Card,
-  CardContent,
-  CardActions,
-  Grid,
-  TextField,
-  InputAdornment,
   Button,
+  Card,
+  CardActions,
+  CardContent,
+  Checkbox,
+  FormControlLabel,
+  Grid,
+  InputAdornment,
   Modal,
+  TextField,
 } from "@mui/material";
-import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import AccessTimeIcon from "@mui/icons-material/AccountCircle";
+import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker";
 import {
   useTaskConfigViewModel,
   useTaskViewModel,
 } from "domain/hooks/taskViewModel";
 import { TaskId } from "domain/model";
+import { useEffect } from "react";
 
 const style = {
   position: "absolute" as "absolute",
@@ -39,6 +41,7 @@ const TaskConfig = (props: { taskId: TaskId }) => {
     handleUpdateName,
     handleUpdateEstimatedWorkload,
     handleUpdateDeadline,
+    handleUpdateShortcutFlg,
     handleUpdateNotes,
   } = useTaskConfigViewModel();
   const { task, updateTask } = useTaskViewModel(props.taskId);
@@ -48,6 +51,7 @@ const TaskConfig = (props: { taskId: TaskId }) => {
       estimatedWorkload: task.estimatedWorkload,
       deadline: task.deadline,
       notes: task.notes,
+      shortcutFlg: task.shortcutFlg,
     });
   }, []);
 
@@ -124,6 +128,26 @@ const TaskConfig = (props: { taskId: TaskId }) => {
                       renderInput={(params) => <TextField {...params} />}
                     />
                   </LocalizationProvider>
+                </Box>
+              </Grid>
+            </Grid>
+            <Grid
+              container
+              direction="row"
+              justifyContent="center"
+              alignItems="center"
+            >
+              <Grid item xs={10}>
+                <Box mt={1}>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={updateTaskProps.shortcutFlg}
+                        onChange={handleUpdateShortcutFlg}
+                      />
+                    }
+                    label="Shortcut"
+                  />
                 </Box>
               </Grid>
             </Grid>

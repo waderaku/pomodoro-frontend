@@ -1,10 +1,10 @@
-import { CatchingPokemonSharp } from "@mui/icons-material";
 import axios from "axios";
 import dayjs from "dayjs";
 import {
   Deadline,
   Minute,
   Notes,
+  ShortcutFlg,
   Task,
   TaskId,
   TaskName,
@@ -12,6 +12,7 @@ import {
 } from "domain/model";
 
 const BACKEND_URI = process.env.REACT_APP_BACKEND_URL;
+const DATE_FORMAT = "YYYY-MM-DD";
 
 interface TaskData {
   name: TaskName;
@@ -30,12 +31,22 @@ interface APITask {
 
 interface TaskTuple {
   id: TaskId;
-  task: Task;
+  task: {
+    //shortcutFlg無し
+    id: TaskId;
+    name: TaskName;
+    childrenIdList: TaskId[];
+    done: boolean;
+    finishedWorkload: Minute;
+    estimatedWorkload: Minute;
+    deadline: Deadline;
+    notes: Notes;
+  };
 }
 
 interface FetchTaskResponse {
   task: APITask[];
-  rootTaskId: TaskId[];
+  shortcutTaskId: TaskId[];
 }
 
 const intoDomainTask = (apitask: APITask): TaskTuple => {
@@ -66,11 +77,15 @@ export const fetchTaskAPI = async (userId: UserId) => {
       const tupleArray = res.data.task.map(intoDomainTask);
       const taskPool: Map<TaskId, Task> = new Map();
       tupleArray.forEach((tuple) => {
-        taskPool.set(tuple.id, tuple.task);
+        const task = {
+          ...tuple.task,
+          shortcutFlg: res.data.shortcutTaskId.includes(tuple.id),
+        };
+        taskPool.set(tuple.id, task);
       });
       return {
         taskPool: taskPool,
-        rootTaskArray: res.data.rootTaskId,
+        shortcutTaskArray: res.data.shortcutTaskId,
       };
     })
     .catch((err) => {
@@ -91,10 +106,11 @@ export const updateTaskAPI = async (userId: UserId, task: Task) => {
   };
   const taskData = {
     name: task.name,
-    deadline: task.deadline.toDate(),
+    deadline: task.deadline.format(DATE_FORMAT),
     estimatedWorkload: task.estimatedWorkload,
     notes: task.notes,
     done: task.done,
+    shortcutFlg: task.shortcutFlg,
   };
   return await axios
     .put<null>(endpoint, taskData, headers)
@@ -112,7 +128,8 @@ export const registerTaskAPI = async (
   name: TaskName,
   estimatedWorkload: Minute,
   deadline: Deadline,
-  notes: Notes
+  notes: Notes,
+  shortcutFlg: ShortcutFlg
 ) => {
   const endpoint = BACKEND_URI + "task";
   const idHeader = {
@@ -121,15 +138,16 @@ export const registerTaskAPI = async (
   const headers = {
     headers: idHeader,
   };
-  const updateData = {
+  const registerData = {
     parentId,
     name,
     estimatedWorkload,
-    deadline: deadline.toDate(),
+    deadline: deadline.format(DATE_FORMAT),
     notes,
+    shortcutFlg,
   };
   return await axios
-    .post<null>(endpoint, updateData, headers)
+    .post<null>(endpoint, registerData, headers)
     .then((res) => res.data)
     .catch((err) => {
       throw new Error(
