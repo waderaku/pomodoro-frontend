@@ -119,5 +119,5 @@ export type TaskConfigViewModel = {
 
 export type TaskResponse = {
   taskPool: Map<TaskId, Task>;
-  rootTaskArray: TaskId[];
+  shortcutTaskArray: TaskId[];
 };
