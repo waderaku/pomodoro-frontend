@@ -53,7 +53,7 @@ const shortcutTaskArrayState = selector<TaskId[]>({
   },
 });
 
-const taskState = selectorFamily<Task, TaskId>({
+export const taskState = selectorFamily<Task, TaskId>({
   key: "task",
   get:
     (taskId) =>
