@@ -12,9 +12,9 @@ import { Grid, Toolbar, Typography } from "@mui/material";
 
 const Root = () => {
   // テスト用
-  const testUserId = "testUser";
+  const testUserId = "1";
   const setUserId = useSetRecoilState(userIdState);
-  const defaultSelectedTaskId = "task1";
+  const defaultSelectedTaskId = "root";
   const setSelectedTaskId = useSetRecoilState(selectedTaskIdState);
   useEffect(() => {
     setUserId(testUserId);
