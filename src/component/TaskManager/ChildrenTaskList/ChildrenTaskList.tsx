@@ -10,10 +10,11 @@ const ChildrenTaskList = (props: { childrenIdList: TaskId[] }) => {
     <List sx={{ paddingTop: "0" }}>
       {/* 未完了タスクを表示 */}
       {props.childrenIdList.map((taskId, key) => {
-        if (!doneList[key]) {
+        const done = doneList[key];
+        if (!done) {
           return (
             <ListItem key={key} sx={{ paddingLeft: 0, paddingRight: 0 }}>
-              <ChildTaskCard taskId={taskId} />
+              <ChildTaskCard taskId={taskId} done={done} />
             </ListItem>
           );
         }
@@ -21,10 +22,11 @@ const ChildrenTaskList = (props: { childrenIdList: TaskId[] }) => {
       })}
       {/* もしshowDoneフラグが立っていれば未完了タスクを表示 */}
       {props.childrenIdList.map((taskId, key) => {
-        if (showDone && doneList[key]) {
+        const done = doneList[key];
+        if (showDone && done) {
           return (
             <ListItem key={key} sx={{ paddingLeft: 0, paddingRight: 0 }}>
-              <ChildTaskCard taskId={taskId} />
+              <ChildTaskCard taskId={taskId} done={done} />
             </ListItem>
           );
         }
