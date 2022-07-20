@@ -2,12 +2,8 @@ import { useSetRecoilState } from "recoil";
 import TaskManager from "./TaskManager";
 import ToolNavi from "./ToolNavi";
 import SideNavi from "./SideNavi";
-import {
-  selectedTaskIdState,
-  useIsTaskLoaded,
-  userIdState,
-} from "domain/hooks/taskViewModel";
-import { useEffect } from "react";
+import { selectedTaskIdState, userIdState } from "domain/hooks/taskViewModel";
+import { useEffect, Suspense } from "react";
 import { Grid, Toolbar, Typography } from "@mui/material";
 
 const Root = () => {
@@ -22,25 +18,20 @@ const Root = () => {
     // eslint-disable-next-line
   }, []);
 
-  const loaded = useIsTaskLoaded();
-  if (loaded) {
-    return (
-      <div>
-        <ToolNavi />
-        <Toolbar />
-        <Grid container>
-          <Grid item xs={2}>
-            <SideNavi />
-          </Grid>
-          <Grid item xs={10}>
-            <TaskManager />
-          </Grid>
+  return (
+    <Suspense fallback={<Typography>Loading...</Typography>}>
+      <ToolNavi />
+      <Toolbar />
+      <Grid container>
+        <Grid item xs={2}>
+          <SideNavi />
         </Grid>
-      </div>
-    );
-  } else {
-    return <Typography>NotLoaded</Typography>;
-  }
+        <Grid item xs={10}>
+          <TaskManager />
+        </Grid>
+      </Grid>
+    </Suspense>
+  );
 };
 
 export default Root;
