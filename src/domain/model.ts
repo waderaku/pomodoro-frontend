@@ -45,6 +45,7 @@ export type TaskViewModel = {
     notes: Notes,
     shortcutFlg: ShortcutFlg
   ) => void;
+  deleteTask: () => void;
   toManager: () => void;
 };
 
@@ -71,6 +72,7 @@ export type TimerViewModel = {
 };
 
 export type TaskConfigModel = TaskId | null;
+export type TaskDeleteModel = TaskId;
 
 export type UpdateTaskModel = {
   name: TaskName;
@@ -93,8 +95,8 @@ export type TaskConfigViewModel = {
       shortcutFlg: ShortcutFlg;
     }>
   >;
-  handleOpen: (taskId: TaskId) => void;
-  handleClose: () => void;
+  handleConfigOpen: (taskId: TaskId) => void;
+  handleConfigClose: () => void;
   handleUpdate: (
     updateTask: (
       taskName: TaskName,
@@ -115,6 +117,14 @@ export type TaskConfigViewModel = {
   handleUpdateNotes: (
     e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
   ) => void;
+};
+
+export type TaskDeleteViewModel = {
+  deleteTaskId: TaskId;
+  handleDeleteScreenOpen: (taskId: TaskId) => void;
+  handleDeleteScreenClose: () => void;
+  handleDelete: (deleteTask: () => void) => void;
+  isDeleteModalOpen: boolean;
 };
 
 export type TaskResponse = {

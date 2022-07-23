@@ -1,24 +1,27 @@
+import { DeleteForever } from "@mui/icons-material";
+import DoneOutlineIcon from "@mui/icons-material/DoneOutline";
+import PlayCircleIcon from "@mui/icons-material/PlayCircle";
+import SettingsIcon from "@mui/icons-material/Settings";
 import {
+  Grid,
+  IconButton,
   ListItemButton,
   ListItemText,
-  Grid,
   Paper,
-  IconButton,
 } from "@mui/material";
-import PlayCircleIcon from "@mui/icons-material/PlayCircle";
-import DoneOutlineIcon from "@mui/icons-material/DoneOutline";
-import SettingsIcon from "@mui/icons-material/Settings";
-import { TaskId } from "domain/model";
 import {
   useTaskConfigViewModel,
+  useTaskDeleteViewModel,
   useTaskViewModel,
 } from "domain/hooks/taskViewModel";
 import { useTimerViewModel } from "domain/hooks/timerViewModels";
+import { TaskId } from "domain/model";
 
 const ChildTaskCard = (props: { taskId: TaskId }) => {
   const taskViewModel = useTaskViewModel(props.taskId);
   const { startTask } = useTimerViewModel();
-  const { handleOpen } = useTaskConfigViewModel();
+  const { handleConfigOpen } = useTaskConfigViewModel();
+  const { handleDeleteScreenOpen } = useTaskDeleteViewModel();
 
   return (
     <Paper
@@ -34,7 +37,7 @@ const ChildTaskCard = (props: { taskId: TaskId }) => {
         </Grid>
         <Grid item xs={2.5}>
           <Grid container alignItems="center" justifyContent="center">
-            <Grid item xs={4}>
+            <Grid item xs={3}>
               <IconButton
                 color="primary"
                 onClick={() => startTask(props.taskId)}
@@ -42,15 +45,23 @@ const ChildTaskCard = (props: { taskId: TaskId }) => {
                 <PlayCircleIcon />
               </IconButton>
             </Grid>
-            <Grid item xs={4}>
+            <Grid item xs={3}>
               <IconButton
                 color="primary"
-                onClick={() => handleOpen(props.taskId)}
+                onClick={() => handleDeleteScreenOpen(props.taskId)}
+              >
+                <DeleteForever />
+              </IconButton>
+            </Grid>
+            <Grid item xs={3}>
+              <IconButton
+                color="primary"
+                onClick={() => handleConfigOpen(props.taskId)}
               >
                 <SettingsIcon />
               </IconButton>
             </Grid>
-            <Grid item xs={4}>
+            <Grid item xs={3}>
               <IconButton
                 color="primary"
                 onClick={() => taskViewModel.finishTask()}
