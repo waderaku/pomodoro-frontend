@@ -155,6 +155,25 @@ export const registerTaskAPI = async (
       );
     });
 };
+
+export const deleteTaskAPI = async (userId: UserId, taskId: TaskId) => {
+  const endpoint = BACKEND_URI + "task/" + taskId;
+  const idHeader = {
+    userId: userId,
+  };
+  const headers = {
+    headers: idHeader,
+  };
+  return await axios
+    .delete<null>(endpoint, headers)
+    .then((res) => res.data)
+    .catch((err) => {
+      throw new Error(
+        `Unexpected API Response from ${endpoint}.\nError: ${err}`
+      );
+    });
+};
+
 export const registerEventAPI = async (
   userId: UserId,
   taskId: TaskId,
