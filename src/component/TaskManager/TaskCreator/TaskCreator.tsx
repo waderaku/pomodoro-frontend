@@ -42,12 +42,11 @@ const TaskCreator = (props: { taskId: TaskId }) => {
   };
 
   return (
-    <Paper>
+    <Paper onKeyDown={onKeyDown}>
       <Grid
         container
         justifyContent="space-between"
         sx={{ alignItems: "center" }}
-        onKeyDown={onKeyDown}
         columns={12}
       >
         <Grid item xs={8}>
@@ -55,7 +54,6 @@ const TaskCreator = (props: { taskId: TaskId }) => {
             container
             justifyContent="flex-start"
             sx={{ alignItems: "center" }}
-            onKeyDown={onKeyDown}
             columns={12}
           >
             <Grid item xs={1}>
