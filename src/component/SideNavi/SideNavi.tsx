@@ -5,6 +5,7 @@ import RootTaskCard from "./RootTaskCard";
 
 const SideNavi = () => {
   const shortcutTaskArray = useShortcutTaskArray();
+  const ROOT_TASKID = "root";
   return (
     <Box
       sx={{
@@ -12,7 +13,7 @@ const SideNavi = () => {
       }}
     >
       <List>
-        <RootTaskCard taskId="root" />
+        <RootTaskCard taskId={ROOT_TASKID} />
         <Divider
           sx={{
             fontSize: "8px",
