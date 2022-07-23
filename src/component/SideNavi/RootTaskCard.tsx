@@ -10,6 +10,8 @@ const RootTaskCard = (props: { taskId: TaskId }) => {
         sx={{
           width: 1.0,
           marginBottom: ".25rem",
+          marginLeft: ".25rem",
+          marginRight: ".25rem",
         }}
       >
         <ListItemButton onClick={taskViewModel.toManager}>
