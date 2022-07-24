@@ -2,10 +2,10 @@ import { Box, Divider, List } from "@mui/material";
 import { useShortcutTaskArray } from "domain/hooks/taskViewModel";
 import { TaskId } from "domain/model";
 import RootTaskCard from "./RootTaskCard";
+import { ROOT_TASK_ID } from "commonConstants";
 
 const SideNavi = () => {
   const shortcutTaskArray = useShortcutTaskArray();
-  const ROOT_TASKID = "root";
   return (
     <Box
       sx={{
@@ -13,7 +13,7 @@ const SideNavi = () => {
       }}
     >
       <List>
-        <RootTaskCard taskId={ROOT_TASKID} />
+        <RootTaskCard taskId={ROOT_TASK_ID} />
         <Divider
           sx={{
             fontSize: "8px",
