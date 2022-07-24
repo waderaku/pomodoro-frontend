@@ -13,12 +13,14 @@ import {
   useTaskConfigViewModel,
   useTaskDeleteViewModel,
   useTaskViewModel,
+  useHasChildTask,
 } from "domain/hooks/taskViewModel";
 import { useTimerViewModel } from "domain/hooks/timerViewModels";
 import { TaskId } from "domain/model";
 
 const ChildTaskCard = (props: { taskId: TaskId }) => {
   const taskViewModel = useTaskViewModel(props.taskId);
+  const hasChildTask = useHasChildTask(props.taskId);
   const { startTask } = useTimerViewModel();
   const { handleConfigOpen } = useTaskConfigViewModel();
   const { handleDeleteScreenOpen } = useTaskDeleteViewModel();
@@ -37,14 +39,16 @@ const ChildTaskCard = (props: { taskId: TaskId }) => {
         </Grid>
         <Grid item xs={2.5}>
           <Grid container alignItems="center" justifyContent="center">
-            <Grid item xs={3}>
-              <IconButton
-                color="primary"
-                onClick={() => startTask(props.taskId)}
-              >
-                <PlayCircleIcon />
-              </IconButton>
-            </Grid>
+            {!hasChildTask ? (
+              <Grid item xs={3}>
+                <IconButton
+                  color="primary"
+                  onClick={() => startTask(props.taskId)}
+                >
+                  <PlayCircleIcon />
+                </IconButton>
+              </Grid>
+            ) : null}
             <Grid item xs={3}>
               <IconButton
                 color="primary"
