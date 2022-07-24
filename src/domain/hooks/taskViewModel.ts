@@ -53,11 +53,13 @@ const taskPoolState = selector<Map<TaskId, Task>>({
   },
 });
 
+// ショートカットタスクのうち未完了のものの配列をリターン
 const shortcutTaskArrayState = selector<TaskId[]>({
   key: "shortcutTaskArray",
-  get: ({ get }) => {
-    return get(taskResponseState).shortcutTaskArray;
-  },
+  get: ({ get }) =>
+    get(taskResponseState).shortcutTaskArray.filter(
+      (taskId) => !get(taskState(taskId)).done
+    ),
 });
 
 export const taskState = selectorFamily<Task, TaskId>({
