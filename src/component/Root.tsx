@@ -5,12 +5,13 @@ import SideNavi from "./SideNavi";
 import { selectedTaskIdState, userIdState } from "domain/hooks/taskViewModel";
 import { useEffect, Suspense } from "react";
 import { Grid, Toolbar, Typography } from "@mui/material";
+import { ROOT_TASK_ID } from "commonConstants";
 
 const Root = () => {
   // テスト用
   const testUserId = "1";
   const setUserId = useSetRecoilState(userIdState);
-  const defaultSelectedTaskId = "root";
+  const defaultSelectedTaskId = ROOT_TASK_ID;
   const setSelectedTaskId = useSetRecoilState(selectedTaskIdState);
   useEffect(() => {
     setUserId(testUserId);
