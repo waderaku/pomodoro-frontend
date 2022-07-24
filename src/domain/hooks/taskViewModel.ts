@@ -1,4 +1,9 @@
-import { fetchTaskAPI, registerTaskAPI, updateTaskAPI } from "backendApi";
+import {
+  deleteTaskAPI,
+  fetchTaskAPI,
+  registerTaskAPI,
+  updateTaskAPI,
+} from "backendApi";
 import dayjs from "dayjs";
 import { ChangeEvent, useState } from "react";
 import {
@@ -20,6 +25,8 @@ import {
   Task,
   TaskConfigModel,
   TaskConfigViewModel,
+  TaskDeleteModel,
+  TaskDeleteViewModel,
   TaskId,
   TaskName,
   TaskResponse,
@@ -160,6 +167,10 @@ export const useTaskViewModel = (taskId: TaskId): TaskViewModel => {
     updateTaskAPI(userId, newTask);
     refresh();
   };
+  const deleteTask = () => {
+    deleteTaskAPI(userId, taskId);
+    refresh();
+  };
   const setSelectedTaskId = useSetRecoilState(selectedTaskIdState);
   const toManager = () => setSelectedTaskId(task.id);
 
@@ -169,6 +180,7 @@ export const useTaskViewModel = (taskId: TaskId): TaskViewModel => {
     finishTask,
     updateTask,
     toManager,
+    deleteTask,
   };
 };
 
@@ -181,6 +193,11 @@ const taskConfigState = atom<TaskConfigModel>({
   default: null,
 });
 
+const taskDeleteState = atom<TaskDeleteModel>({
+  key: "taskDelete",
+  default: "",
+});
+
 export const useTaskConfigViewModel = (): TaskConfigViewModel => {
   const [taskConfig, setTaskConfig] = useRecoilState(taskConfigState);
   const isModalOpen = taskConfig ? true : false;
@@ -191,10 +208,10 @@ export const useTaskConfigViewModel = (): TaskConfigViewModel => {
     notes: "",
     shortcutFlg: false,
   });
-  const handleOpen = (taskId: TaskId) => {
+  const handleConfigOpen = (taskId: TaskId) => {
     setTaskConfig(taskId);
   };
-  const handleClose = () => {
+  const handleConfigClose = () => {
     setTaskConfig(null);
   };
   const handleUpdate = (
@@ -213,7 +230,7 @@ export const useTaskConfigViewModel = (): TaskConfigViewModel => {
       updateTaskProps.notes,
       updateTaskProps.shortcutFlg
     );
-    handleClose();
+    handleConfigClose();
   };
   const handleUpdateName = (
     e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
@@ -258,13 +275,37 @@ export const useTaskConfigViewModel = (): TaskConfigViewModel => {
     isModalOpen,
     updateTaskProps,
     setupdateTaskProps,
-    handleOpen,
-    handleClose,
+    handleConfigOpen,
+    handleConfigClose,
     handleUpdate,
     handleUpdateName,
     handleUpdateEstimatedWorkload,
     handleUpdateDeadline,
     handleUpdateShortcutFlg,
     handleUpdateNotes,
+  };
+};
+
+export const useTaskDeleteViewModel = (): TaskDeleteViewModel => {
+  const [deleteTaskId, setDeleteTaskId] = useRecoilState(taskDeleteState);
+  const handleDeleteScreenOpen = (taskId: TaskId) => {
+    setDeleteTaskId(taskId);
+  };
+  const handleDeleteScreenClose = () => {
+    setDeleteTaskId("");
+  };
+  const isDeleteModalOpen = deleteTaskId ? true : false;
+
+  const handleDelete = (deleteTask: () => void) => {
+    deleteTask();
+    handleDeleteScreenClose();
+  };
+
+  return {
+    deleteTaskId,
+    handleDeleteScreenOpen,
+    handleDeleteScreenClose,
+    handleDelete,
+    isDeleteModalOpen,
   };
 };

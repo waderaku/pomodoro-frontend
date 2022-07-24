@@ -7,10 +7,11 @@ import {
   useSelectedTaskId,
   useTaskViewModel,
 } from "domain/hooks/taskViewModel";
-import Timer from "./Timer";
 import TaskConfig from "./TaskConfig";
 import DoneSwitcher from "./DoneSwitcher";
 
+import TaskDelete from "./TaskDelete";
+import Timer from "./Timer";
 const TaskManager = () => {
   const taskId = useSelectedTaskId();
   const taskViewModel = useTaskViewModel(taskId);
@@ -20,6 +21,7 @@ const TaskManager = () => {
       <Stack spacing={2}>
         <Timer />
         <TaskConfig />
+        <TaskDelete />
         <MainTaskCard taskName={taskViewModel.task.name} />
         <TaskSummaryCard task={taskViewModel.task} />
         <TaskCreator taskId={taskId} />
