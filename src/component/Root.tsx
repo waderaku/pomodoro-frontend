@@ -14,7 +14,7 @@ const Root = () => {
   // テスト用
   const testUserId = "1";
   const setUserId = useSetRecoilState(userIdState);
-  const defaultSelectedTaskId = "1";
+  const defaultSelectedTaskId = "root";
   const setSelectedTaskId = useSetRecoilState(selectedTaskIdState);
   useEffect(() => {
     setUserId(testUserId);
