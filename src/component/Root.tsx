@@ -9,12 +9,13 @@ import {
 } from "domain/hooks/taskViewModel";
 import { useEffect } from "react";
 import { Grid, Toolbar, Typography } from "@mui/material";
+import { ROOT_TASK_ID } from "commonConstants";
 
 const Root = () => {
   // テスト用
-  const testUserId = "testUser";
+  const testUserId = "1";
   const setUserId = useSetRecoilState(userIdState);
-  const defaultSelectedTaskId = "task1";
+  const defaultSelectedTaskId = ROOT_TASK_ID;
   const setSelectedTaskId = useSetRecoilState(selectedTaskIdState);
   useEffect(() => {
     setUserId(testUserId);
