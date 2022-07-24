@@ -60,7 +60,7 @@ const shortcutTaskArrayState = selector<TaskId[]>({
   },
 });
 
-const taskState = selectorFamily<Task, TaskId>({
+export const taskState = selectorFamily<Task, TaskId>({
   key: "task",
   get:
     (taskId) =>
@@ -121,14 +121,14 @@ export const useTaskViewModel = (taskId: TaskId): TaskViewModel => {
   const userId = useRecoilValue(userIdState);
   // TaskCreatorとサイドバーのプロジェクトの追加で使われるタスク追加
   const refresh = useRecoilRefresher_UNSTABLE(taskPoolState);
-  const createTask = (
+  const createTask = async (
     taskName: TaskName,
     estimatedWorkload: Minute,
     deadline: Deadline,
     notes: Notes,
     shortcutFlg: ShortcutFlg
   ) => {
-    registerTaskAPI(
+    await registerTaskAPI(
       userId,
       task.id,
       taskName,
@@ -136,27 +136,17 @@ export const useTaskViewModel = (taskId: TaskId): TaskViewModel => {
       deadline,
       notes,
       shortcutFlg
-    )
-      .then(() => {
-        refresh();
-      })
-      .catch((e) => {
-        throw new Error(`Task Creation Failed with error: ${e}`);
-      });
+    );
+    refresh();
   };
   // TaskSummaryCardでfinishタスクが押下されたとき
-  const finishTask = () => {
+  const finishTask = async () => {
     if (task.done) {
       throw new Error("This task is already done");
     }
     const newTask = { ...task, done: true };
-    updateTaskAPI(userId, newTask)
-      .then(() => {
-        refresh();
-      })
-      .catch((e) => {
-        throw new Error(`Task Creation Failed with error: ${e}`);
-      });
+    await updateTaskAPI(userId, newTask);
+    refresh();
   };
   // Configモーダルでtaskの編集がなされた時
   const updateTask = (
