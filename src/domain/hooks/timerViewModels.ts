@@ -2,7 +2,7 @@ import { registerEventAPI } from "backendApi";
 import dayjs from "dayjs";
 import { Second, TaskId, Timer, TimerViewModel } from "domain/model";
 import { useTimer } from "react-timer-hook";
-import { atom, useRecoilValue, useRecoilState } from "recoil";
+import { atom, useRecoilState, useRecoilValue } from "recoil";
 import { userIdState } from "./taskViewModel";
 
 export const timerState = atom<Timer>({
@@ -13,6 +13,7 @@ export const timerState = atom<Timer>({
     isTask: false,
     setTime: 1,
     timerWorking: "none",
+    isRunning: true,
   },
 });
 
@@ -31,13 +32,16 @@ export const useTimerViewModel = (): TimerViewModel => {
   const { seconds, minutes, isRunning, start, pause, restart } = useTimer({
     expiryTimestamp,
     onExpire: () => changeTaskBreak,
-    autoStart: true,
+    // TODO：現仕様ではStart→Stop→Startした場合、Stopしていた時間もTimerが進んでいる
+    // 今の状態の場合、Full→Start→Stop→Mini→Startの手順を踏んだ場合、Stopしていた時間はTimerが進まない
+    // 基本的には後者が仕様として正しそうだが、その場合バックエンドに繋げるAPIの仕様を考慮する必要がある
+    autoStart: timer.isRunning,
   });
 
   const updateTimer = (newTimerState: Timer, restartFlg: boolean) => {
     setTimer(newTimerState);
-    const resetTime = setTime(newTimerState.setTime);
-    restart(resetTime, restartFlg);
+    const expiryTimestamp = setTime(newTimerState.setTime);
+    restart(expiryTimestamp, restartFlg);
   };
 
   const startTask = (taskId: TaskId) => {
@@ -59,6 +63,7 @@ export const useTimerViewModel = (): TimerViewModel => {
         // TODO ユーザー設定から1clockの時間取得
         setTime: 25 * 60,
         timerWorking: "Full",
+        isRunning: true,
       },
       true
     );
@@ -83,6 +88,7 @@ export const useTimerViewModel = (): TimerViewModel => {
         // TODO ユーザー設定から1clockの時間取得
         setTime: !timer.isTask ? 25 * 60 : 5 * 60,
         timerWorking: timer.timerWorking,
+        isRunning: true,
       },
       true
     );
@@ -96,6 +102,7 @@ export const useTimerViewModel = (): TimerViewModel => {
         isTask: timer.isTask,
         setTime: seconds + minutes * 60,
         timerWorking: "Mini",
+        isRunning: isRunning,
       },
       isRunning
     );
@@ -109,6 +116,7 @@ export const useTimerViewModel = (): TimerViewModel => {
         isTask: timer.isTask,
         setTime: seconds + minutes * 60,
         timerWorking: "Full",
+        isRunning: isRunning,
       },
       isRunning
     );
