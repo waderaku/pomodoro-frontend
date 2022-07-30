@@ -40,16 +40,16 @@ const ChildTaskCard = (props: { taskId: TaskId; done: boolean }) => {
         </Grid>
         <Grid item xs={2.5}>
           <Grid container alignItems="center" justifyContent="center">
-            {!hasChildTask ? (
-              <Grid item xs={3}>
+            <Grid item xs={3}>
+              {!hasChildTask ? (
                 <IconButton
                   color="primary"
                   onClick={() => startTask(props.taskId)}
                 >
                   <PlayCircleIcon />
                 </IconButton>
-              </Grid>
-            ) : null}
+              ) : null}
+            </Grid>
             <Grid item xs={3}>
               <IconButton
                 color="primary"
