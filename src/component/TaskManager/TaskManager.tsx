@@ -1,14 +1,14 @@
-import { Stack, Box, Divider } from "@mui/material";
-import MainTaskCard from "./MainTaskCard";
-import TaskSummaryCard from "./TaskSummaryCard";
-import TaskCreator from "./TaskCreator";
-import ChildrenTaskList from "./ChildrenTaskList";
+import { Box, Divider, Stack } from "@mui/material";
 import {
   useSelectedTaskId,
   useTaskViewModel,
 } from "domain/hooks/taskViewModel";
-import TaskConfig from "./TaskConfig";
+import ChildrenTaskList from "./ChildrenTaskList";
 import DoneSwitcher from "./DoneSwitcher";
+import MainTaskCard from "./MainTaskCard";
+import TaskConfig from "./TaskConfig";
+import TaskCreator from "./TaskCreator";
+import TaskSummaryCard from "./TaskSummaryCard";
 
 import TaskDelete from "./TaskDelete";
 import Timer from "./Timer";
@@ -22,7 +22,7 @@ const TaskManager = () => {
         <Timer />
         <TaskConfig />
         <TaskDelete />
-        <MainTaskCard taskName={taskViewModel.task.name} />
+        <MainTaskCard taskViewModel={taskViewModel} />
         <TaskSummaryCard task={taskViewModel.task} />
         <TaskCreator taskId={taskId} />
         <Divider sx={{ fontSize: "8px", color: "#9e9e9e" }}>
