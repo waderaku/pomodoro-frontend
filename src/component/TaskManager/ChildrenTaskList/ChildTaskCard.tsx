@@ -18,7 +18,7 @@ import {
 import { useTimerViewModel } from "domain/hooks/timerViewModels";
 import { TaskId } from "domain/model";
 
-const ChildTaskCard = (props: { taskId: TaskId }) => {
+const ChildTaskCard = (props: { taskId: TaskId; done: boolean }) => {
   const taskViewModel = useTaskViewModel(props.taskId);
   const hasChildTask = useHasChildTask(props.taskId);
   const { startTask } = useTimerViewModel();
@@ -29,6 +29,7 @@ const ChildTaskCard = (props: { taskId: TaskId }) => {
     <Paper
       sx={{
         width: 1.0,
+        backgroundColor: !props.done ? "#ffffff" : "#eeeeee",
       }}
     >
       <Grid container alignItems="center" justifyContent="space-between">
@@ -66,12 +67,15 @@ const ChildTaskCard = (props: { taskId: TaskId }) => {
               </IconButton>
             </Grid>
             <Grid item xs={3}>
-              <IconButton
-                color="primary"
-                onClick={() => taskViewModel.finishTask()}
-              >
-                <DoneOutlineIcon />
-              </IconButton>
+              {/* タスク完了ボタン */}
+              {!props.done ? (
+                <IconButton
+                  color="primary"
+                  onClick={() => taskViewModel.finishTask()}
+                >
+                  <DoneOutlineIcon />
+                </IconButton>
+              ) : null}
             </Grid>
           </Grid>
         </Grid>

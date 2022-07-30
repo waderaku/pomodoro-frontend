@@ -53,7 +53,8 @@ const TaskConfig = (props: { taskId: TaskId }) => {
       notes: task.notes,
       shortcutFlg: task.shortcutFlg,
     });
-  }, []);
+    // eslint-disable-next-line
+  }, []);  
 
   return (
     <Modal
