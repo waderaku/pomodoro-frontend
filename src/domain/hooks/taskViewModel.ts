@@ -118,6 +118,10 @@ export const useIsTaskLoaded = () => {
   return useRecoilValueLoadable(taskPoolState).state === "hasValue";
 };
 
+export const useHasChildTask = (taskId: TaskId) => {
+  return useRecoilValue(taskState(taskId)).childrenIdList.length > 0;
+};
+
 export const useTaskViewModel = (taskId: TaskId): TaskViewModel => {
   const task = useRecoilValue(taskState(taskId));
   const userId = useRecoilValue(userIdState);

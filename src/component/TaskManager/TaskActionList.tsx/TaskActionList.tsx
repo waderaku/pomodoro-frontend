@@ -7,6 +7,7 @@ import { ROOT_TASK_ID } from "commonConstants";
 import {
   useTaskConfigViewModel,
   useTaskDeleteViewModel,
+  useHasChildTask,
 } from "domain/hooks/taskViewModel";
 import { useTimerViewModel } from "domain/hooks/timerViewModels";
 import { TaskId } from "domain/model";
@@ -35,16 +36,19 @@ const TaskActionList = (props: {
   const { startTask } = useTimerViewModel();
   const { handleConfigOpen } = useTaskConfigViewModel();
   const { handleDeleteScreenOpen } = useTaskDeleteViewModel();
+  const hasChildTask = useHasChildTask(props.taskId);
   if (props.taskId === ROOT_TASK_ID) return null;
   return (
     <Grid container alignItems="center" justifyContent="center">
       <Grid item xs={3}>
-        <IconButton
-          color={props.iconColor}
-          onClick={() => startTask(props.taskId)}
-        >
-          <PlayCircleIcon fontSize={props.iconSize} />
-        </IconButton>
+        {!hasChildTask ? (
+          <IconButton
+            color={props.iconColor}
+            onClick={() => startTask(props.taskId)}
+          >
+            <PlayCircleIcon fontSize={props.iconSize} />
+          </IconButton>
+        ) : null}
       </Grid>
       <Grid item xs={3}>
         <IconButton
