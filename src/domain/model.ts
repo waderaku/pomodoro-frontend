@@ -55,6 +55,7 @@ export type Timer = {
   isTask: boolean;
   setTime: Second;
   timerWorking: TimerWorking;
+  isRunning: boolean;
 };
 
 export type TimerViewModel = {
