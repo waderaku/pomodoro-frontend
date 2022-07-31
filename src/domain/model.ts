@@ -131,3 +131,8 @@ export type TaskResponse = {
   taskPool: Map<TaskId, Task>;
   shortcutTaskArray: TaskId[];
 };
+
+export type UserData = {
+  userId: UserId;
+  password: Password;
+};
