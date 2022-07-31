@@ -206,7 +206,7 @@ export const registerEventAPI = async (
 export const registerUserAPI = async (userData: UserData) => {
   const endpoint = BACKEND_URI + "user/";
   const headers = {
-    headers: {},
+    headers: { "Content-Type": "application/json" },
   };
   const eventData = {
     userId: userData.userId,

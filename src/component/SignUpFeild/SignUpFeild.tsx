@@ -9,6 +9,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useUserViewModel } from "domain/hooks/userViewModel";
+import { ChangeEvent } from "react";
 /**
  * 導線としてはRootでログインされてるか(userIdを持ってるか)で
  * SignInFeildを表示するか、通常画面を表示するかが変わる想定
@@ -42,7 +43,9 @@ const SignUpFeild = () => {
                     fullWidth
                     id="userId"
                     label="User Id"
-                    onChange={(e) => handleUpdateUserId(e)}
+                    onChange={(
+                      e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+                    ) => handleUpdateUserId(e)}
                     defaultValue={userData.userId}
                     variant="standard"
                   />
@@ -62,7 +65,9 @@ const SignUpFeild = () => {
                     id="password"
                     label="Password"
                     type="password"
-                    onChange={(e) => handleUpdatePassword(e)}
+                    onChange={(
+                      e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+                    ) => handleUpdatePassword(e)}
                     defaultValue={userData.userId}
                     variant="standard"
                   />
