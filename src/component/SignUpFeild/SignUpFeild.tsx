@@ -6,6 +6,7 @@ import {
   Box,
   CardActions,
   Button,
+  Typography,
 } from "@mui/material";
 import { useUserViewModel } from "domain/hooks/userViewModel";
 /**
@@ -28,6 +29,13 @@ const SignUpFeild = () => {
               justifyContent="center"
               alignItems="center"
             >
+              <Grid item xs={10}>
+                <Box mt={1}>
+                  <Typography variant="h4" align="center">
+                    新規ユーザー登録
+                  </Typography>
+                </Box>
+              </Grid>
               <Grid item xs={10}>
                 <Box mt={1}>
                   <TextField

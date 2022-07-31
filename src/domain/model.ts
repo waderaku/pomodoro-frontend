@@ -10,6 +10,7 @@ export type Notes = string;
 export type Deadline = Dayjs;
 export type ShortcutFlg = boolean;
 export type TimerWorking = "none" | "Full" | "Mini";
+export type Password = string;
 
 export type Task = {
   id: TaskId;
