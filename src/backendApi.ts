@@ -9,6 +9,7 @@ import {
   TaskId,
   TaskName,
   UserId,
+  UserData,
 } from "domain/model";
 
 const BACKEND_URI = process.env.REACT_APP_BACKEND_URL;
@@ -155,6 +156,25 @@ export const registerTaskAPI = async (
       );
     });
 };
+
+export const deleteTaskAPI = async (userId: UserId, taskId: TaskId) => {
+  const endpoint = BACKEND_URI + "task/" + taskId;
+  const idHeader = {
+    userId: userId,
+  };
+  const headers = {
+    headers: idHeader,
+  };
+  return await axios
+    .delete<null>(endpoint, headers)
+    .then((res) => res.data)
+    .catch((err) => {
+      throw new Error(
+        `Unexpected API Response from ${endpoint}.\nError: ${err}`
+      );
+    });
+};
+
 export const registerEventAPI = async (
   userId: UserId,
   taskId: TaskId,
@@ -172,6 +192,25 @@ export const registerEventAPI = async (
     taskId,
     start,
     end,
+  };
+  return await axios
+    .post<null>(endpoint, eventData, headers)
+    .then((res) => res.data)
+    .catch((err) => {
+      throw new Error(
+        `Unexpected API Response from ${endpoint}.\nError: ${err}`
+      );
+    });
+};
+
+export const registerUserAPI = async (userData: UserData) => {
+  const endpoint = BACKEND_URI + "user/";
+  const headers = {
+    headers: { "Content-Type": "application/json" },
+  };
+  const eventData = {
+    userId: userData.userId,
+    password: userData.password,
   };
   return await axios
     .post<null>(endpoint, eventData, headers)

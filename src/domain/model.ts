@@ -10,6 +10,7 @@ export type Notes = string;
 export type Deadline = Dayjs;
 export type ShortcutFlg = boolean;
 export type TimerWorking = "none" | "Full" | "Mini";
+export type Password = string;
 
 export type Task = {
   id: TaskId;
@@ -45,6 +46,7 @@ export type TaskViewModel = {
     notes: Notes,
     shortcutFlg: ShortcutFlg
   ) => void;
+  deleteTask: () => void;
   toManager: () => void;
 };
 
@@ -54,6 +56,7 @@ export type Timer = {
   isTask: boolean;
   setTime: Second;
   timerWorking: TimerWorking;
+  isRunning: boolean;
 };
 
 export type TimerViewModel = {
@@ -71,6 +74,7 @@ export type TimerViewModel = {
 };
 
 export type TaskConfigModel = TaskId | null;
+export type TaskDeleteModel = TaskId;
 
 export type UpdateTaskModel = {
   name: TaskName;
@@ -93,8 +97,8 @@ export type TaskConfigViewModel = {
       shortcutFlg: ShortcutFlg;
     }>
   >;
-  handleOpen: (taskId: TaskId) => void;
-  handleClose: () => void;
+  handleConfigOpen: (taskId: TaskId) => void;
+  handleConfigClose: () => void;
   handleUpdate: (
     updateTask: (
       taskName: TaskName,
@@ -117,7 +121,20 @@ export type TaskConfigViewModel = {
   ) => void;
 };
 
+export type TaskDeleteViewModel = {
+  deleteTaskId: TaskId;
+  handleDeleteScreenOpen: (taskId: TaskId) => void;
+  handleDeleteScreenClose: () => void;
+  handleDelete: (deleteTask: () => void) => void;
+  isDeleteModalOpen: boolean;
+};
+
 export type TaskResponse = {
   taskPool: Map<TaskId, Task>;
   shortcutTaskArray: TaskId[];
+};
+
+export type UserData = {
+  userId: UserId;
+  password: Password;
 };

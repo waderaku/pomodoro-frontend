@@ -1,4 +1,9 @@
-import { fetchTaskAPI, registerTaskAPI, updateTaskAPI } from "backendApi";
+import {
+  deleteTaskAPI,
+  fetchTaskAPI,
+  registerTaskAPI,
+  updateTaskAPI,
+} from "backendApi";
 import dayjs from "dayjs";
 import { ChangeEvent, useState } from "react";
 import {
@@ -20,6 +25,8 @@ import {
   Task,
   TaskConfigModel,
   TaskConfigViewModel,
+  TaskDeleteModel,
+  TaskDeleteViewModel,
   TaskId,
   TaskName,
   TaskResponse,
@@ -46,14 +53,16 @@ const taskPoolState = selector<Map<TaskId, Task>>({
   },
 });
 
+// ショートカットタスクのうち未完了のものの配列をリターン
 const shortcutTaskArrayState = selector<TaskId[]>({
   key: "shortcutTaskArray",
-  get: ({ get }) => {
-    return get(taskResponseState).shortcutTaskArray;
-  },
+  get: ({ get }) =>
+    get(taskResponseState).shortcutTaskArray.filter(
+      (taskId) => !get(taskState(taskId)).done
+    ),
 });
 
-const taskState = selectorFamily<Task, TaskId>({
+export const taskState = selectorFamily<Task, TaskId>({
   key: "task",
   get:
     (taskId) =>
@@ -109,19 +118,23 @@ export const useIsTaskLoaded = () => {
   return useRecoilValueLoadable(taskPoolState).state === "hasValue";
 };
 
+export const useHasChildTask = (taskId: TaskId) => {
+  return useRecoilValue(taskState(taskId)).childrenIdList.length > 0;
+};
+
 export const useTaskViewModel = (taskId: TaskId): TaskViewModel => {
   const task = useRecoilValue(taskState(taskId));
   const userId = useRecoilValue(userIdState);
   // TaskCreatorとサイドバーのプロジェクトの追加で使われるタスク追加
   const refresh = useRecoilRefresher_UNSTABLE(taskPoolState);
-  const createTask = (
+  const createTask = async (
     taskName: TaskName,
     estimatedWorkload: Minute,
     deadline: Deadline,
     notes: Notes,
     shortcutFlg: ShortcutFlg
   ) => {
-    registerTaskAPI(
+    await registerTaskAPI(
       userId,
       task.id,
       taskName,
@@ -129,27 +142,17 @@ export const useTaskViewModel = (taskId: TaskId): TaskViewModel => {
       deadline,
       notes,
       shortcutFlg
-    )
-      .then(() => {
-        refresh();
-      })
-      .catch((e) => {
-        throw new Error(`Task Creation Failed with error: ${e}`);
-      });
+    );
+    refresh();
   };
   // TaskSummaryCardでfinishタスクが押下されたとき
-  const finishTask = () => {
+  const finishTask = async () => {
     if (task.done) {
       throw new Error("This task is already done");
     }
     const newTask = { ...task, done: true };
-    updateTaskAPI(userId, newTask)
-      .then(() => {
-        refresh();
-      })
-      .catch((e) => {
-        throw new Error(`Task Creation Failed with error: ${e}`);
-      });
+    await updateTaskAPI(userId, newTask);
+    refresh();
   };
   // Configモーダルでtaskの編集がなされた時
   const updateTask = (
@@ -170,6 +173,10 @@ export const useTaskViewModel = (taskId: TaskId): TaskViewModel => {
     updateTaskAPI(userId, newTask);
     refresh();
   };
+  const deleteTask = () => {
+    deleteTaskAPI(userId, taskId);
+    refresh();
+  };
   const setSelectedTaskId = useSetRecoilState(selectedTaskIdState);
   const toManager = () => setSelectedTaskId(task.id);
 
@@ -179,6 +186,7 @@ export const useTaskViewModel = (taskId: TaskId): TaskViewModel => {
     finishTask,
     updateTask,
     toManager,
+    deleteTask,
   };
 };
 
@@ -191,6 +199,11 @@ const taskConfigState = atom<TaskConfigModel>({
   default: null,
 });
 
+const taskDeleteState = atom<TaskDeleteModel>({
+  key: "taskDelete",
+  default: "",
+});
+
 export const useTaskConfigViewModel = (): TaskConfigViewModel => {
   const [taskConfig, setTaskConfig] = useRecoilState(taskConfigState);
   const isModalOpen = taskConfig ? true : false;
@@ -201,10 +214,10 @@ export const useTaskConfigViewModel = (): TaskConfigViewModel => {
     notes: "",
     shortcutFlg: false,
   });
-  const handleOpen = (taskId: TaskId) => {
+  const handleConfigOpen = (taskId: TaskId) => {
     setTaskConfig(taskId);
   };
-  const handleClose = () => {
+  const handleConfigClose = () => {
     setTaskConfig(null);
   };
   const handleUpdate = (
@@ -223,7 +236,7 @@ export const useTaskConfigViewModel = (): TaskConfigViewModel => {
       updateTaskProps.notes,
       updateTaskProps.shortcutFlg
     );
-    handleClose();
+    handleConfigClose();
   };
   const handleUpdateName = (
     e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
@@ -268,13 +281,37 @@ export const useTaskConfigViewModel = (): TaskConfigViewModel => {
     isModalOpen,
     updateTaskProps,
     setupdateTaskProps,
-    handleOpen,
-    handleClose,
+    handleConfigOpen,
+    handleConfigClose,
     handleUpdate,
     handleUpdateName,
     handleUpdateEstimatedWorkload,
     handleUpdateDeadline,
     handleUpdateShortcutFlg,
     handleUpdateNotes,
+  };
+};
+
+export const useTaskDeleteViewModel = (): TaskDeleteViewModel => {
+  const [deleteTaskId, setDeleteTaskId] = useRecoilState(taskDeleteState);
+  const handleDeleteScreenOpen = (taskId: TaskId) => {
+    setDeleteTaskId(taskId);
+  };
+  const handleDeleteScreenClose = () => {
+    setDeleteTaskId("");
+  };
+  const isDeleteModalOpen = deleteTaskId ? true : false;
+
+  const handleDelete = (deleteTask: () => void) => {
+    deleteTask();
+    handleDeleteScreenClose();
+  };
+
+  return {
+    deleteTaskId,
+    handleDeleteScreenOpen,
+    handleDeleteScreenClose,
+    handleDelete,
+    isDeleteModalOpen,
   };
 };

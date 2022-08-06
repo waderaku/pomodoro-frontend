@@ -1,29 +1,17 @@
-import {
-  ListItemButton,
-  ListItemText,
-  Grid,
-  Paper,
-  IconButton,
-} from "@mui/material";
-import PlayCircleIcon from "@mui/icons-material/PlayCircle";
-import DoneOutlineIcon from "@mui/icons-material/DoneOutline";
-import SettingsIcon from "@mui/icons-material/Settings";
+import { Grid, ListItemButton, ListItemText, Paper } from "@mui/material";
+import { useTaskViewModel } from "domain/hooks/taskViewModel";
 import { TaskId } from "domain/model";
-import {
-  useTaskConfigViewModel,
-  useTaskViewModel,
-} from "domain/hooks/taskViewModel";
-import { useTimerViewModel } from "domain/hooks/timerViewModels";
+import TaskActionList from "../TaskActionList.tsx";
 
-const ChildTaskCard = (props: { taskId: TaskId }) => {
+const ChildTaskCard = (props: { taskId: TaskId; done: boolean }) => {
   const taskViewModel = useTaskViewModel(props.taskId);
-  const { startTask } = useTimerViewModel();
-  const { handleOpen } = useTaskConfigViewModel();
-
+  const childIconColor = "secondary";
+  const childIconSize = "medium";
   return (
     <Paper
       sx={{
         width: 1.0,
+        backgroundColor: !props.done ? "#ffffff" : "#eeeeee",
       }}
     >
       <Grid container alignItems="center" justifyContent="space-between">
@@ -33,32 +21,13 @@ const ChildTaskCard = (props: { taskId: TaskId }) => {
           </ListItemButton>
         </Grid>
         <Grid item xs={2.5}>
-          <Grid container alignItems="center" justifyContent="center">
-            <Grid item xs={4}>
-              <IconButton
-                color="primary"
-                onClick={() => startTask(props.taskId)}
-              >
-                <PlayCircleIcon />
-              </IconButton>
-            </Grid>
-            <Grid item xs={4}>
-              <IconButton
-                color="primary"
-                onClick={() => handleOpen(props.taskId)}
-              >
-                <SettingsIcon />
-              </IconButton>
-            </Grid>
-            <Grid item xs={4}>
-              <IconButton
-                color="primary"
-                onClick={() => taskViewModel.finishTask()}
-              >
-                <DoneOutlineIcon />
-              </IconButton>
-            </Grid>
-          </Grid>
+          <TaskActionList
+            taskId={props.taskId}
+            done={props.done}
+            finishTask={taskViewModel.finishTask}
+            iconColor={childIconColor}
+            iconSize={childIconSize}
+          />
         </Grid>
       </Grid>
     </Paper>

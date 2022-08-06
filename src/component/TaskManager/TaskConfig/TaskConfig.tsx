@@ -36,7 +36,7 @@ const TaskConfig = (props: { taskId: TaskId }) => {
     isModalOpen,
     updateTaskProps,
     setupdateTaskProps,
-    handleClose,
+    handleConfigClose,
     handleUpdate,
     handleUpdateName,
     handleUpdateEstimatedWorkload,
@@ -53,12 +53,13 @@ const TaskConfig = (props: { taskId: TaskId }) => {
       notes: task.notes,
       shortcutFlg: task.shortcutFlg,
     });
-  }, []);
+    // eslint-disable-next-line
+  }, []);  
 
   return (
     <Modal
       open={isModalOpen}
-      onClose={handleClose}
+      onClose={handleConfigClose}
       aria-labelledby="taskConfig"
       aria-describedby="taskConfig"
     >
@@ -179,7 +180,7 @@ const TaskConfig = (props: { taskId: TaskId }) => {
               justifyContent="space-evenly"
               alignItems="center"
             >
-              <Button size="small" onClick={handleClose}>
+              <Button size="small" onClick={handleConfigClose}>
                 close
               </Button>
               <Button
