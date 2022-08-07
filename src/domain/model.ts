@@ -11,6 +11,8 @@ export type Deadline = Dayjs;
 export type ShortcutFlg = boolean;
 export type TimerWorking = "none" | "Full" | "Mini";
 export type Password = string;
+export type AouthToken = string;
+export type SignInOrUpFlag = boolean;
 
 export type Task = {
   id: TaskId;

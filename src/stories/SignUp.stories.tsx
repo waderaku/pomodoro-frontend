@@ -1,5 +1,5 @@
 import { ComponentMeta, ComponentStory } from "@storybook/react";
-import SignUpField from "component/SignUpFeild";
+import SignUpField from "component/SignInOrUpField/SignUpFeild";
 import { RecoilRoot } from "recoil";
 
 export default {

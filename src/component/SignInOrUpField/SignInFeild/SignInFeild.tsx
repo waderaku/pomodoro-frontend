@@ -10,12 +10,8 @@ import {
 } from "@mui/material";
 import { useUserViewModel } from "domain/hooks/userViewModel";
 import { ChangeEvent } from "react";
-/**
- * 導線としてはRootでログインされてるか(userIdを持ってるか)で
- * SignInFeildを表示するか、通常画面を表示するかが変わる想定
- * さらに、このSignUpFeildはSignInFeildから遷移される想定
- */
-const SignUpFeild = () => {
+
+const SignInFeild = () => {
   const { userData, handleUpdateUserId, handleUpdatePassword, createUser } =
     useUserViewModel();
 
@@ -88,10 +84,10 @@ const SignUpFeild = () => {
                   //signInButtonでき次第戻る
                 }}
               >
-                return
+                To SignUp Menu
               </Button>
               <Button size="small" onClick={createUser}>
-                register
+                log in
               </Button>
             </Grid>
           </CardActions>
@@ -100,4 +96,4 @@ const SignUpFeild = () => {
     </Grid>
   );
 };
-export default SignUpFeild;
+export default SignInFeild;
